@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ascendgangtok.com/sitemap.xml
