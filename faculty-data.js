@@ -1,5 +1,5 @@
 /*
-  ASCEND INSTITUTE — FACULTY LIST
+  ASCEND INSTITUTE: FACULTY LIST
   --------------------------------
   This is the ONLY file you need to edit to add, update or remove a
   teacher on the Faculty page. No coding knowledge needed beyond

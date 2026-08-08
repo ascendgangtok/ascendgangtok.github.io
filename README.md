@@ -63,35 +63,50 @@ Only publish a teacher's name/photo once their details are confirmed
 and, if a photo is used, once you have their permission — same rule
 the Results page already follows for students.
 
-## 2026-08-07 update: Study Notes section
-Added a new Notes section, starting with CBSE Class 10 Mathematics —
-Real Numbers is the first complete chapter, with 13 more listed as
-"coming soon" on `notes-cbse10-maths.html`.
+## 2026-08-08 update: Study Notes section
+Added a new Study Notes section, starting with CBSE Class 10
+Mathematics. Real Numbers is the first complete chapter, with 13 more
+listed as "coming soon" on `notes-cbse10-maths.html`.
 
 - Each chapter is a standalone HTML page (e.g.
   `notes-cbse10-maths-real-numbers.html`), styled with new
   `.notes-article`/`.definition-box`/`.example-box` classes in
   `styles.css`.
-- The "Download PDF" button just calls the browser's native print
-  dialog (`.print-trigger` in `script.js`) against a dedicated
-  `@media print` stylesheet that hides all site chrome (nav, footer,
-  WhatsApp button, CTA band, table of contents, the button itself) —
-  so the PDF is always the same content as the page, nothing to keep
-  in sync separately.
+- The "Download PDF" button links straight to a real, pre-generated
+  PDF file in `assets/notes-pdf/`, not a live print dialog. This is
+  more reliable across browsers/devices than relying on the visitor's
+  own "Print to PDF," at the cost of a small file to keep in sync.
+- **When you edit a chapter's content, regenerate its PDF.** The
+  `@media print` stylesheet in `styles.css` still defines what the PDF
+  looks like (hides nav, footer, WhatsApp button, CTA band, table of
+  contents, the download button itself). To regenerate: open the
+  chapter page in a browser, print it (Ctrl/Cmd+P), and save as PDF
+  into `assets/notes-pdf/` with the matching filename. (This was
+  previously automated with Playwright during development; ask if you
+  want that script.)
 - To add the next chapter: copy `notes-cbse10-maths-real-numbers.html`
-  as a template, write the new content inside `.notes-article`, then
-  update its row in `notes-cbse10-maths.html` to link to it instead of
-  showing "Coming soon."
+  as a template, write the new content inside `.notes-article`,
+  generate its PDF the same way, then update its row in
+  `notes-cbse10-maths.html` to link to it instead of showing "Coming
+  soon."
 
 ### Also fixed while building this
 - Mobile nav dropdown menu had a leftover `height:100%` from the
   desktop layout, squeezing it to the header's height so only 2 of 7
   links had a background.
 - Homepage trust bar (`.trust`) could overflow horizontally in the
-  ~820–950px window after a font-size increase; removed the
+  ~820-950px window after a font-size increase; removed the
   `white-space:nowrap` that was forcing it.
 - Contact page's Google Map could overflow its grid column in the same
-  width range — classic CSS Grid issue where a percentage-based
+  width range. Classic CSS Grid issue: a percentage-based
   `grid-template-columns` doesn't reserve room for `gap` consistently
-  when a replaced element (the map `<iframe>`) is inside it; switched
+  when a replaced element (the map `<iframe>`) is inside it. Switched
   to `fr` units, which are gap-aware by spec.
+- The `.reveal` scroll-fade animation (opacity 0 until scrolled into
+  view) meant printing a notes page without first scrolling through it
+  could produce a blank PDF. Added `.reveal{opacity:1}` to the print
+  stylesheet so printed/PDF content is never dependent on JS/scroll
+  state.
+- The nav briefly overflowed at exactly 821px wide after "Study Notes"
+  replaced the shorter "Notes" label. Tightened nav spacing at the
+  1050px breakpoint to give it more room.
