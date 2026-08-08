@@ -6,6 +6,9 @@ This edition keeps the approved red/black/white visual style but separates the c
 - `index.html` — concise homepage
 - `about.html` — institute overview and academic approach
 - `courses.html` — course categories and enquiry links
+- `notes.html` — study notes hub (browse by class/subject)
+- `notes-cbse10-maths.html` — CBSE Class 10 Maths chapter list
+- `notes-cbse10-maths-real-numbers.html` — Real Numbers chapter notes, with PDF download
 - `home-tuition.html` — detailed page for the finest service
 - `faculty.html` — faculty profiles, rendered automatically from `faculty-data.js`
 - `results.html` — verified results/testimonial placeholders
@@ -59,3 +62,36 @@ Instead, the Faculty page is generated from a single plain data file:
 Only publish a teacher's name/photo once their details are confirmed
 and, if a photo is used, once you have their permission — same rule
 the Results page already follows for students.
+
+## 2026-08-07 update: Study Notes section
+Added a new Notes section, starting with CBSE Class 10 Mathematics —
+Real Numbers is the first complete chapter, with 13 more listed as
+"coming soon" on `notes-cbse10-maths.html`.
+
+- Each chapter is a standalone HTML page (e.g.
+  `notes-cbse10-maths-real-numbers.html`), styled with new
+  `.notes-article`/`.definition-box`/`.example-box` classes in
+  `styles.css`.
+- The "Download PDF" button just calls the browser's native print
+  dialog (`.print-trigger` in `script.js`) against a dedicated
+  `@media print` stylesheet that hides all site chrome (nav, footer,
+  WhatsApp button, CTA band, table of contents, the button itself) —
+  so the PDF is always the same content as the page, nothing to keep
+  in sync separately.
+- To add the next chapter: copy `notes-cbse10-maths-real-numbers.html`
+  as a template, write the new content inside `.notes-article`, then
+  update its row in `notes-cbse10-maths.html` to link to it instead of
+  showing "Coming soon."
+
+### Also fixed while building this
+- Mobile nav dropdown menu had a leftover `height:100%` from the
+  desktop layout, squeezing it to the header's height so only 2 of 7
+  links had a background.
+- Homepage trust bar (`.trust`) could overflow horizontally in the
+  ~820–950px window after a font-size increase; removed the
+  `white-space:nowrap` that was forcing it.
+- Contact page's Google Map could overflow its grid column in the same
+  width range — classic CSS Grid issue where a percentage-based
+  `grid-template-columns` doesn't reserve room for `gap` consistently
+  when a replaced element (the map `<iframe>`) is inside it; switched
+  to `fr` units, which are gap-aware by spec.
