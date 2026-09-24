@@ -7,6 +7,8 @@ This edition keeps the approved red/black/white visual style but separates the c
 - `about.html` — institute overview and academic approach
 - `courses.html` — course categories and enquiry links
 - `notes.html` — study notes hub (browse by class/subject)
+- `quizzes.html` — 14 class-wise interactive quizzes
+- `question-papers.html` — 14 printable practice papers and a combined PDF
 - `notes-cbse10-maths.html` — CBSE Class 10 Maths chapter list
 - `notes-cbse10-maths-real-numbers.html` — Real Numbers chapter notes, with PDF download
 - `home-tuition.html` — detailed page for the finest service
@@ -15,7 +17,7 @@ This edition keeps the approved red/black/white visual style but separates the c
 - `contact.html` — contact cards, map and WhatsApp enquiry form
 
 ## Publishing
-Upload all files and the `assets` folder together into the public web root for `ascendgangtok.com`. Do not upload only `index.html`; the shared CSS, JavaScript, images and the other pages are required.
+Publish all public files and the `assets` folder together at the root of the existing `ascendgangtok/ascend-website` GitHub Pages repository. The current public URL is `https://ascendgangtok.github.io/ascend-website/`. The custom domain `ascendgangtok.com` is not configured in GitHub Pages and does not currently resolve, so canonical URLs, sharing metadata, `robots.txt`, and `sitemap.xml` use the working Pages URL. Update those URLs and add `CNAME` only after DNS and Pages custom-domain configuration are ready.
 
 ## Before launch
 1. Add confirmed faculty details and photographs.
@@ -64,9 +66,10 @@ and, if a photo is used, once you have their permission — same rule
 the Results page already follows for students.
 
 ## 2026-08-08 update: Study Notes section
-Added a new Study Notes section, starting with CBSE Class 10
-Mathematics. Real Numbers is the first complete chapter, with 13 more
-listed as "coming soon" on `notes-cbse10-maths.html`.
+Added a Study Notes section with all 14 CBSE Class 10 Mathematics
+chapters and all 13 CBSE Class 10 Science chapters. The content and
+assessment scope were reviewed for the 2026–27 CBSE curriculum and
+corresponding NCERT textbook reprints.
 
 - Each chapter is a standalone HTML page (e.g.
   `notes-cbse10-maths-real-numbers.html`), styled with new
@@ -84,11 +87,35 @@ listed as "coming soon" on `notes-cbse10-maths.html`.
   into `assets/notes-pdf/` with the matching filename. (This was
   previously automated with Playwright during development; ask if you
   want that script.)
-- To add the next chapter: copy `notes-cbse10-maths-real-numbers.html`
-  as a template, write the new content inside `.notes-article`,
-  generate its PDF the same way, then update its row in
-  `notes-cbse10-maths.html` to link to it instead of showing "Coming
-  soon."
+- To add a new class or subject, copy an existing subject index and
+  chapter page as templates, write the new content inside
+  `.notes-article`, regenerate its PDFs, and add the new destination to
+  `notes.html`, the shared navigation and `sitemap.xml`.
+
+## 2026-09-01 update: academic review and Quizzes
+- Rechecked the Class 10 Mathematics and Science materials against the
+  2026–27 CBSE scope and NCERT reprints, corrected factual/formula issues,
+  and removed year-end Mathematics topics that are outside the current
+  scope.
+- Clearly labelled Science content that CBSE assigns only to
+  formative/internal assessment.
+- Added `quizzes.html` as a class-wise quiz hub. It intentionally contains
+  no sample questions until the supplied quiz sets have been reviewed.
+- Updated responsive navigation and chapter-list actions for the added
+  Quizzes link and smaller screens.
+
+## 2026-09-01 update: quiz and practice-paper libraries
+- Replaced the Quizzes placeholder with 14 supplied interactive quizzes,
+  grouped by board, class, subject and chapter. Every quiz contains 25
+  questions, instant scoring and a complete answer review.
+- Added `question-papers.html`, with 14 supplied 20-mark, 40–45-minute PDF
+  papers arranged in the same board/class/subject/chapter structure.
+- Added a combined 28-page PDF containing all 14 practice papers.
+- Stored the resources in predictable, lowercase paths under
+  `assets/quizzes/` and `assets/question-papers/`, so further classes and
+  chapters can be added without changing the page structure.
+- Added a return link to every standalone quiz, and added Practice Papers
+  to the shared navigation, footer and sitemap.
 
 ### Also fixed while building this
 - Mobile nav dropdown menu had a leftover `height:100%` from the
@@ -110,3 +137,31 @@ listed as "coming soon" on `notes-cbse10-maths.html`.
 - The nav briefly overflowed at exactly 821px wide after "Study Notes"
   replaced the shorter "Notes" label. Tightened nav spacing at the
   1050px breakpoint to give it more room.
+
+## Tuition fee payment page
+
+- `payment.html` is the standalone tuition-fee payment page intended to be shared directly with parents.
+- Public URL after publishing: `https://ascendgangtok.github.io/ascend-website/payment.html`
+- Optional prefill: `payment.html?name=Student%20Name&amount=9000`
+- The page prepares a UPI payment to `ascendgangtok@axl` (Mani K Chettri, State Bank of India).
+- The QR option is hidden until selected.
+- The page is marked `noindex,nofollow` and is intentionally not added to the public sitemap.
+- A direct UPI-app request may be declined by an individual UPI app's security checks; the QR option remains available as the fallback.
+- This static page does not automatically verify or record successful payments. Verify receipt in the linked bank/UPI account.
+
+
+## Home Tuition registration on GitHub Pages
+
+- `home-tuition-registration.html` calculates an estimated monthly fee and prepares the completed registration request as a WhatsApp message to Ascend Institute. The parent must open WhatsApp and tap Send. The site does not save the form or generate a registration reference.
+- Ascend Institute confirms the registration and fee with the parent before payment. The registration page links to `payment.html` for use after confirmation.
+- `payment.html` prepares a UPI payment or displays the payment QR. Payment receipt must be verified by the institute; the static site cannot verify it.
+- The earlier PHP registration endpoint was removed from the public package because GitHub Pages cannot execute it. The earlier registration package is retained in the local source archive outside this public repository.
+
+## Student service links
+
+The public footer includes a discreet **Student Services** section with:
+
+- `home-tuition-registration.html` — Home Tuition registration request via WhatsApp
+- `payment.html` — standalone tuition-fee payment page
+
+These links are intentionally kept out of the main navigation. The registration and payment pages remain marked `noindex` so they are available to families without being treated as normal public landing pages by search engines. `noindex` does not make them private; anyone with the URL can open them.

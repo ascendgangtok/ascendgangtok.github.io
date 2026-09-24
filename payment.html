@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pay Tuition Fee | Ascend Institute, Gangtok</title>
+  <meta name="description" content="Securely prepare a tuition fee payment to Ascend Institute using UPI or the institute payment QR code.">
+  <meta name="theme-color" content="#ef1c24">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="payment">
+<header class="site-header">
+  <div class="shell nav-wrap">
+    <a class="brand" href="index.html" aria-label="Ascend Institute home">
+      <img src="assets/ascend-logo-header.png" alt="Ascend Institute logo" width="700" height="170">
+      <span>ASCEND INSTITUTE&nbsp; | &nbsp;GANGTOK</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><i></i><i></i><i></i></button>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="courses.html">Courses</a>
+      <a href="notes.html">Study Notes</a>
+      <a href="quizzes.html">Quizzes</a>
+      <a href="question-papers.html">Papers</a>
+      <a href="home-tuition.html">Home Tuition</a>
+      <a href="faculty.html">Faculty</a>
+      <a href="results.html">Results</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="btn btn-primary nav-cta whatsapp-link" data-message="Hello Ascend Institute, I would like to enquire about admission." href="#">Admissions Open</a>
+  </div>
+</header>
+
+<main>
+  <section class="payment-page-section">
+    <div class="shell payment-page-shell">
+      <div class="payment-page-intro">
+        <span class="eyebrow">ASCEND INSTITUTE</span>
+        <h1>Pay Tuition Fee</h1>
+        <p>Enter the student name and the amount to be paid.</p>
+      </div>
+
+      <section class="payment-box" aria-labelledby="payment-box-title">
+        <div class="payment-box-title" id="payment-box-title">TUITION FEE PAYMENT</div>
+        <div class="payment-box-body">
+          <div class="payment-field">
+            <label for="studentName">Student Name</label>
+            <input id="studentName" type="text" maxlength="80" autocomplete="name" placeholder="Enter student name" required>
+          </div>
+
+          <div class="payment-field">
+            <label for="amount">Amount</label>
+            <div class="payment-amount-input">
+              <span aria-hidden="true">₹</span>
+              <input id="amount" type="text" inputmode="decimal" maxlength="9" autocomplete="off" placeholder="0" required>
+            </div>
+          </div>
+
+          <div class="payment-payee" aria-label="Payment recipient details">
+            <p><strong>UPI ID:</strong> <span>ascendgangtok@axl</span></p>
+            <p><strong>Account Holder:</strong> Mani K Chettri</p>
+            <p><strong>Bank:</strong> State Bank of India</p>
+          </div>
+
+          <a id="payBtn" class="payment-upi-btn is-disabled" href="#" aria-disabled="true">Pay with UPI App</a>
+          <p class="payment-small-note">The entered amount will be filled automatically in the UPI app.</p>
+
+          <div class="payment-or" aria-hidden="true"><span>OR</span></div>
+
+          <button id="qrToggleBtn" class="payment-qr-btn" type="button" aria-expanded="false" aria-controls="qrPanel">Pay using QR Code</button>
+          <div id="qrPanel" class="payment-qr-panel" hidden>
+            <p id="qrHelp">Scan the QR code and enter the amount shown above.</p>
+            <img src="assets/upi-payment-qr.png" alt="Ascend Institute UPI QR code" width="410" height="410">
+            <small>Ascend Institute<br>ascendgangtok@axl</small>
+          </div>
+
+          <div id="paymentMessage" class="payment-validation" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <p class="payment-support">For payment assistance, contact <a href="tel:+917797898999">77978 98999</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <section>
+      <a class="footer-brand" href="index.html"><img src="assets/ascend-logo.png" alt="Ascend Institute" width="442" height="324" loading="lazy" decoding="async"></a>
+      <p>Focused academic support for Classes VIII–XII in Gangtok, including regular tuition, foundational mathematics and home tuition.</p>
+      <a class="footer-social" href="https://www.instagram.com/ascendgangtok/" target="_blank" rel="noopener"><span data-icon="instagram"></span>@ascendgangtok</a>
+    </section>
+    <section>
+      <h2>Explore</h2>
+      <div class="footer-links">
+        <a href="about.html">About Ascend</a><a href="courses.html">Courses</a><a href="notes.html">Study Notes</a><a href="quizzes.html">Quizzes</a><a href="question-papers.html">Practice Papers</a><a href="home-tuition.html">Home Tuition</a><a href="faculty.html">Faculty</a><a href="results.html">Results</a>
+      </div>
+    </section>
+    <section>
+      <h2>Get in Touch</h2>
+      <a href="tel:+917797898999"><span data-icon="phone"></span>7797898999</a>
+      <a href="tel:+917076942996"><span data-icon="phone"></span>7076942996</a>
+      <a href="mailto:ascendgangtok@gmail.com"><span data-icon="mail"></span>ascendgangtok@gmail.com</a>
+      <a href="https://maps.app.goo.gl/xoUGktQBaNF6AnrW9" target="_blank" rel="noopener"><span data-icon="pin"></span>Tejpal Pradhan Building, Near Indian Post Office, Daragoan, Gangtok, Sikkim 737102</a>
+    </section>
+  </div>
+  <div class="copyright">© <span id="year">2026</span> Ascend Institute, Gangtok. All rights reserved.</div>
+</footer>
+
+<a class="floating-whatsapp whatsapp-link" href="#" data-message="Hello Ascend Institute, I need help with a tuition fee payment." aria-label="Contact Ascend Institute on WhatsApp"><span data-icon="whatsapp"></span></a>
+<script src="script.js"></script>
+<script>
+(() => {
+  'use strict';
+  const UPI_ID = 'ascendgangtok@axl';
+  const PAYEE = 'Mani K Chettri';
+  const MAX_AMOUNT = 200000;
+
+  const nameEl = document.getElementById('studentName');
+  const amountEl = document.getElementById('amount');
+  const payBtn = document.getElementById('payBtn');
+  const qrToggleBtn = document.getElementById('qrToggleBtn');
+  const qrPanel = document.getElementById('qrPanel');
+  const qrHelp = document.getElementById('qrHelp');
+  const message = document.getElementById('paymentMessage');
+
+  const cleanAmount = value => {
+    const parsed = Number(String(value).replace(/[^0-9.]/g, ''));
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+  };
+
+  const formatAmount = amount => new Intl.NumberFormat('en-IN', {
+    style: 'currency', currency: 'INR', maximumFractionDigits: 2
+  }).format(amount);
+
+  function setDisabled(disabled) {
+    payBtn.classList.toggle('is-disabled', disabled);
+    payBtn.setAttribute('aria-disabled', String(disabled));
+    if (disabled) payBtn.setAttribute('href', '#');
+  }
+
+  function updatePayment() {
+    const student = nameEl.value.trim();
+    const amount = cleanAmount(amountEl.value);
+    message.textContent = '';
+
+    if (!student || !amount || amount > MAX_AMOUNT) {
+      setDisabled(true);
+      if (amount > MAX_AMOUNT) message.textContent = 'Please check the amount entered.';
+      qrHelp.textContent = amount ? `Scan the QR code and pay ${formatAmount(amount)}.` : 'Scan the QR code and enter the amount shown above.';
+      return;
+    }
+
+    const params = new URLSearchParams({
+      pa: UPI_ID,
+      pn: PAYEE,
+      am: amount.toFixed(2),
+      cu: 'INR',
+      tn: `Tuition Fee - ${student}`
+    });
+    payBtn.setAttribute('href', `upi://pay?${params.toString()}`);
+    setDisabled(false);
+    qrHelp.textContent = `Scan the QR code and pay ${formatAmount(amount)}.`;
+  }
+
+  amountEl.addEventListener('input', () => {
+    let raw = amountEl.value.replace(/[^0-9.]/g, '');
+    const parts = raw.split('.');
+    if (parts.length > 1) raw = parts[0] + '.' + parts.slice(1).join('').slice(0, 2);
+    amountEl.value = raw;
+    updatePayment();
+  });
+  nameEl.addEventListener('input', updatePayment);
+
+  payBtn.addEventListener('click', event => {
+    if (payBtn.classList.contains('is-disabled')) {
+      event.preventDefault();
+      message.textContent = 'Please enter the student name and payment amount first.';
+    }
+  });
+
+  qrToggleBtn.addEventListener('click', () => {
+    const opening = qrPanel.hasAttribute('hidden');
+    if (opening) qrPanel.removeAttribute('hidden');
+    else qrPanel.setAttribute('hidden', '');
+    qrToggleBtn.setAttribute('aria-expanded', String(opening));
+    qrToggleBtn.textContent = opening ? 'Hide QR Code' : 'Pay using QR Code';
+    if (opening) qrPanel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  });
+
+  const query = new URLSearchParams(window.location.search);
+  const prefillName = (query.get('name') || '').slice(0, 80);
+  const prefillAmount = (query.get('amount') || '').replace(/[^0-9.]/g, '').slice(0, 9);
+  if (prefillName) nameEl.value = prefillName;
+  if (prefillAmount) amountEl.value = prefillAmount;
+  updatePayment();
+})();
+</script>
+</body>
+</html>
