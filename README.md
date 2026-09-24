@@ -144,9 +144,9 @@ corresponding NCERT textbook reprints.
 - Public URL after publishing: `https://ascendgangtok.github.io/payment.html`
 - Optional prefill: `payment.html?name=Student%20Name&amount=9000`
 - The page prepares a UPI payment to `ascendgangtok@axl` (Mani K Chettri, State Bank of India).
-- The QR option is hidden until selected.
+- The amount-filled QR code is shown as the primary method after the student name and amount are entered. It is generated in the browser by the locally included MIT-licensed `assets/qrcode-generator.js`, so no third-party QR service receives payment details.
 - The page is marked `noindex,nofollow` and is intentionally not added to the public sitemap.
-- A direct UPI-app request may be declined by an individual UPI app's security checks; the QR option remains available as the fallback.
+- Copying the UPI ID is the fallback; opening a UPI app directly remains optional because an individual app may decline a direct request.
 - This static page does not automatically verify or record successful payments. Verify receipt in the linked bank/UPI account.
 
 
