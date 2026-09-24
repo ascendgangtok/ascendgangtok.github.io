@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Home Tuition Registration | Ascend Institute</title>
-<meta name="description" content="Request Home Tuition registration with Ascend Institute, Gangtok, using WhatsApp.">
+<meta name="description" content="Complete Home Tuition registration details and proceed to payment with Ascend Institute, Gangtok.">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="theme-color" content="#ed1c24">
 <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -81,9 +81,9 @@ textarea{min-height:94px;resize:vertical} .hint{font-size:14.5px;color:#707070;m
 <body>
 <div class="page"><div class="inner">
 <header class="topbar"><img class="logo" alt="Ascend Institute" src="assets/ascend-logo-header.png" width="700" height="170"><div class="toplabel"><span>HOME TUITION</span> REGISTRATION</div></header>
-<section class="hero"><h1>Home <span>Tuition Registration</span></h1><div class="rule"></div><p>Complete the details below, then send your request to Ascend Institute on WhatsApp. The institute will confirm your registration.</p></section>
+<section class="hero"><h1>Home <span>Tuition Registration</span></h1><div class="rule"></div><p>Complete the details below, review your monthly tuition fee, and proceed to payment.</p></section>
 <div class="progress"><div class="active"></div><div class="active"></div><div class="active"></div><div class="active"></div></div>
-<noscript><p class="payment-note">JavaScript is required to prepare the WhatsApp registration request. Please contact Ascend Institute by phone if it is disabled.</p></noscript>
+<noscript><p class="payment-note">JavaScript is required to calculate the fee and proceed to payment. Please contact Ascend Institute by phone if it is disabled.</p></noscript>
 <form id="registrationForm" method="post">
 <div class="hp-field" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
 <section class="section">
@@ -121,7 +121,7 @@ textarea{min-height:94px;resize:vertical} .hint{font-size:14.5px;color:#707070;m
 <div class="fee-row" id="addonFeeRow"><div class="label">Add-on subject</div><div class="amount" id="addonFee">₹0</div></div>
 <div class="fee-total"><span>Monthly Tuition Fee</span><span class="big" id="totalFee">₹0</span></div>
 </div></div>
-<div class="payment-note"><strong>The monthly tuition fee shown above is an estimate for the selected package.</strong> Please wait for Ascend Institute to confirm your registration and fee before paying.</div>
+<div class="payment-note"><strong>The monthly tuition fee shown above is an estimate for the selected package.</strong> Confirm your details below to continue to payment.</div>
 </section>
 
 <section class="section">
@@ -135,9 +135,9 @@ textarea{min-height:94px;resize:vertical} .hint{font-size:14.5px;color:#707070;m
 </div>
 <div class="grid" style="margin-top:18px"><div class="full"><label for="declarantName">Parent / Guardian Full Name <span class="req">*</span></label><input id="declarantName" name="declarantName" maxlength="100" required /></div></div>
 <div class="declaration"><input type="checkbox" id="agree" name="agree" required><label for="agree">I confirm that the information provided above is correct. I have read and understood the Home Tuition terms and agree to be contacted by Ascend Institute regarding this registration. <span class="req">*</span></label></div>
-<div class="submit-row"><div class="submit-note">Your details will be prepared as a WhatsApp message. You must tap Send in WhatsApp to deliver the request.</div><button class="submit-btn" id="submitButton" type="submit">Prepare WhatsApp Message</button></div>
+<div class="submit-row"><div class="submit-note">Please check your registration details and the estimated monthly fee before continuing.</div><button class="submit-btn" id="submitButton" type="submit">Confirm Details</button></div>
 <div class="submit-error" id="submitError" role="alert"></div>
-<div class="success" id="successBox" role="status" aria-live="polite"><h3>Ready to send</h3><p>Open WhatsApp and tap <strong>Send</strong>. This request has not yet been delivered or confirmed.</p><a class="upi-pay-btn" id="whatsappSubmitLink" href="#" target="_blank" rel="noopener">Open WhatsApp and Send Request</a><p><strong>Estimated monthly fee:</strong> <span id="successFee">₹0</span></p><p>Ascend Institute will confirm your registration and payment details. Once confirmed, you can use the <a href="payment.html" style="color:var(--red);text-decoration:underline">tuition fee payment page</a>.</p>
+<div class="success" id="successBox" role="status" aria-live="polite"><h3>Registration Details Complete</h3><p><strong>Estimated monthly fee:</strong> <span id="successFee">₹0</span></p><p>Please proceed to payment to complete your Home Tuition registration.</p><a class="upi-pay-btn" id="proceedToPaymentLink" href="payment.html">Proceed to Payment</a>
 </div>
 </section>
 </form>
@@ -185,32 +185,8 @@ document.getElementById('registrationForm').addEventListener('submit',e=>{
   clearSubmitError();
   const calculated=updateFee();
   if(!calculated.total){showSubmitError('Please select a valid class, board and weekly schedule.');return}
-  const data=new FormData(form);
-  const value=name=>String(data.get(name)||'').trim();
-  const lines=[
-    'Hello Ascend Institute, I would like to request Home Tuition registration.',
-    '',
-    `Student: ${value('studentName')}`,
-    `Parent/guardian: ${value('guardianName')}`,
-    `School: ${value('schoolName')}`,
-    `WhatsApp number: ${value('phone')}`,
-    `Alternate number: ${value('altPhone')||'None'}`,
-    `Address: ${value('address')}`,
-    `Landmark: ${value('landmark')||'None'}`,
-    `Class group: ${value('classGroup')}`,
-    `Board: ${value('board')}`,
-    `Classes per week: ${value('days')}`,
-    `Subjects: ${selectedSubjectNames().join(', ')}`,
-    `Add-on subject: ${classGroup.value==='11-12'?'Not applicable':value('addon')==='yes'?'Yes':'No'}`,
-    `Preferred start date: ${value('startDate')||'To discuss'}`,
-    `Preferred time: ${value('startTime')||'To discuss'}`,
-    `Academic note: ${value('academicNote')||'None'}`,
-    `Declared by: ${value('declarantName')}`,
-    `Estimated monthly fee: ${money(calculated.total)}`,
-    '',
-    'I agree to the Home Tuition terms and request confirmation of registration and fee before payment.'
-  ];
-  document.getElementById('whatsappSubmitLink').href='https://wa.me/917797898999?text='+encodeURIComponent(lines.join('\n'));
+  const studentName=String(new FormData(form).get('studentName')||'').trim();
+  document.getElementById('proceedToPaymentLink').href='payment.html?name='+encodeURIComponent(studentName)+'&amount='+calculated.total;
   document.getElementById('successBox').style.display='block';
   document.getElementById('successBox').scrollIntoView({behavior:'smooth',block:'start'});
 });
