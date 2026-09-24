@@ -86,6 +86,7 @@ textarea{min-height:94px;resize:vertical} .hint{font-size:14.5px;color:#707070;m
 <noscript><p class="payment-note">JavaScript is required to calculate the fee and proceed to payment. Please contact Ascend Institute by phone if it is disabled.</p></noscript>
 <form id="registrationForm" method="post">
 <div class="hp-field" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+<input type="hidden" id="submissionKey" name="submissionKey"><input type="hidden" id="quotedFee" name="quotedFee">
 <section class="section">
 <div class="section-title">1. STUDENT &amp; PARENT DETAILS</div>
 <div class="grid">
@@ -135,15 +136,18 @@ textarea{min-height:94px;resize:vertical} .hint{font-size:14.5px;color:#707070;m
 </div>
 <div class="grid" style="margin-top:18px"><div class="full"><label for="declarantName">Parent / Guardian Full Name <span class="req">*</span></label><input id="declarantName" name="declarantName" maxlength="100" required /></div></div>
 <div class="declaration"><input type="checkbox" id="agree" name="agree" required><label for="agree">I confirm that the information provided above is correct. I have read and understood the Home Tuition terms and agree to be contacted by Ascend Institute regarding this registration. <span class="req">*</span></label></div>
+<p class="submit-note">Your registration details will be recorded by Ascend Institute and used for tuition registration, coordination and payment follow-up.</p>
 <div class="submit-row"><div class="submit-note">Please check your registration details and the estimated monthly fee before continuing.</div><button class="submit-btn" id="submitButton" type="submit">Confirm Details</button></div>
 <div class="submit-error" id="submitError" role="alert"></div>
-<div class="success" id="successBox" role="status" aria-live="polite"><h3>Registration Details Complete</h3><p><strong>Estimated monthly fee:</strong> <span id="successFee">₹0</span></p><p>Please proceed to payment to complete your Home Tuition registration.</p><a class="upi-pay-btn" id="proceedToPaymentLink" href="payment.html">Proceed to Payment</a>
+<div class="success" id="successBox" role="status" aria-live="polite"><h3>Registration Successfully Recorded</h3><p><strong>Registration ID:</strong> <span id="registrationId"></span></p><p>Please keep this reference for future communication.</p><p><strong>Estimated monthly fee:</strong> <span id="successFee">₹0</span></p><p>Your registration details have been received by Ascend Institute. Please proceed to payment to complete your Home Tuition registration.</p><a class="upi-pay-btn" id="proceedToPaymentLink" href="payment.html">Proceed to Payment</a>
 </div>
 </section>
 </form>
+<iframe name="registrationResponseFrame" title="Registration submission response" hidden></iframe>
 <footer class="footer"><strong>ASCEND INSTITUTE &nbsp;|&nbsp; GANGTOK</strong><div class="contact">Enquiries: 77978 98999 &nbsp;|&nbsp; 70769 42996</div><div class="small">ascendgangtok.com &nbsp;|&nbsp; @ascendgangtok<br>Daragoan, Gangtok</div></footer>
 </div></div>
 <script>
+const REGISTRATION_WEB_APP_URL='https://script.google.com/macros/s/AKfycbzmc_tCwCrvyiE4xNGzd-7cL5w6PF8uf4YOyh7dsLdqank3BbqYEGW0J4VGvEh8tL9a/exec';
 const fees={
 '1-5':{'Any board':{3:6000,4:7000,5:7800}},
 '6-8':{'CBSE':{3:7000,4:8400,5:9500},'ICSE':{3:7500,4:8900,5:10000}},
@@ -177,20 +181,65 @@ function showSubmitError(message){
   box.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function clearSubmitError(){const box=document.getElementById('submitError');box.textContent='';box.style.display='none'}
+const registrationForm=document.getElementById('registrationForm');
+const submitButton=document.getElementById('submitButton');
+let pendingSubmission=null;
+let submissionKey='';
+let submissionTimer=null;
+function finishSubmission(){
+  clearTimeout(submissionTimer);
+  submissionTimer=null;
+  pendingSubmission=null;
+  submitButton.disabled=false;
+  submitButton.textContent='Confirm Details';
+}
+window.addEventListener('message',event=>{
+  if(event.origin!=='https://script.googleusercontent.com'&&event.origin!=='https://script.google.com'&&!/^https:\/\/[a-z0-9-]+-script\.googleusercontent\.com$/.test(event.origin))return;
+  const reply=event.data;
+  if(!pendingSubmission||!reply||reply.type!=='ascend-home-tuition-registration'||reply.submissionKey!==pendingSubmission.key)return;
+  const expected=pendingSubmission;
+  finishSubmission();
+  if(reply.saved!==true||!/^HT-\d{8}-\d{3,}$/.test(String(reply.id||''))||reply.studentName!==expected.studentName||Number(reply.amount)!==expected.amount){
+    showSubmitError('We could not save your registration at the moment. Please try again or contact Ascend Institute.');
+    return;
+  }
+  document.getElementById('registrationId').textContent=reply.id;
+  document.getElementById('successFee').textContent=money(expected.amount);
+  document.getElementById('proceedToPaymentLink').href='payment.html?name='+encodeURIComponent(expected.studentName)+'&amount='+expected.amount;
+  document.getElementById('successBox').style.display='block';
+  document.getElementById('successBox').scrollIntoView({behavior:'smooth',block:'start'});
+});
 document.getElementById('registrationForm').addEventListener('submit',e=>{
   e.preventDefault();
   const form=e.currentTarget;
+  if(pendingSubmission)return;
   if(!form.reportValidity())return;
   if(selectedSubjectCount()===0){alert('Please select at least one subject.');return}
   clearSubmitError();
   const calculated=updateFee();
   if(!calculated.total){showSubmitError('Please select a valid class, board and weekly schedule.');return}
+  if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(REGISTRATION_WEB_APP_URL)){
+    showSubmitError('Registration recording is temporarily unavailable. Please contact Ascend Institute.');
+    return;
+  }
   const studentName=String(new FormData(form).get('studentName')||'').trim();
-  document.getElementById('proceedToPaymentLink').href='payment.html?name='+encodeURIComponent(studentName)+'&amount='+calculated.total;
-  document.getElementById('successBox').style.display='block';
-  document.getElementById('successBox').scrollIntoView({behavior:'smooth',block:'start'});
+  submissionKey=submissionKey||crypto.randomUUID();
+  document.getElementById('submissionKey').value=submissionKey;
+  document.getElementById('quotedFee').value=String(calculated.total);
+  pendingSubmission={key:submissionKey,studentName,amount:calculated.total};
+  submitButton.disabled=true;
+  submitButton.textContent='Saving Registration...';
+  form.action=REGISTRATION_WEB_APP_URL;
+  form.target='registrationResponseFrame';
+  submissionTimer=setTimeout(()=>{
+    if(!pendingSubmission)return;
+    finishSubmission();
+    showSubmitError('We could not confirm that your registration was saved. Please try again or contact Ascend Institute.');
+  },45000);
+  HTMLFormElement.prototype.submit.call(form);
 });
 for(const eventName of ['input','change'])document.getElementById('registrationForm').addEventListener(eventName,()=>{
+  if(!pendingSubmission)submissionKey='';
   document.getElementById('successBox').style.display='none';
 });
 updateBoard();updateFee();
