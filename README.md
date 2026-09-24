@@ -17,7 +17,7 @@ This edition keeps the approved red/black/white visual style but separates the c
 - `contact.html` — contact cards, map and WhatsApp enquiry form
 
 ## Publishing
-Publish all public files and the `assets` folder together at the root of the existing `ascendgangtok/ascend-website` GitHub Pages repository. The current public URL is `https://ascendgangtok.github.io/ascend-website/`. The custom domain `ascendgangtok.com` is not configured in GitHub Pages and does not currently resolve, so canonical URLs, sharing metadata, `robots.txt`, and `sitemap.xml` use the working Pages URL. Update those URLs and add `CNAME` only after DNS and Pages custom-domain configuration are ready.
+Publish all public files and the `assets` folder together at the root of the existing `ascendgangtok/ascendgangtok.github.io` GitHub Pages repository. The current public URL is `https://ascendgangtok.github.io/`. The custom domain `ascendgangtok.com` is not configured in GitHub Pages and does not currently resolve, so canonical URLs, sharing metadata, `robots.txt`, and `sitemap.xml` use the working Pages URL. Update those URLs and add `CNAME` only after DNS and Pages custom-domain configuration are ready.
 
 ## Before launch
 1. Add confirmed faculty details and photographs.
@@ -141,7 +141,7 @@ corresponding NCERT textbook reprints.
 ## Tuition fee payment page
 
 - `payment.html` is the standalone tuition-fee payment page intended to be shared directly with parents.
-- Public URL after publishing: `https://ascendgangtok.github.io/ascend-website/payment.html`
+- Public URL after publishing: `https://ascendgangtok.github.io/payment.html`
 - Optional prefill: `payment.html?name=Student%20Name&amount=9000`
 - The page prepares a UPI payment to `ascendgangtok@axl` (Mani K Chettri, State Bank of India).
 - The QR option is hidden until selected.
