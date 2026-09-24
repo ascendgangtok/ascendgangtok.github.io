@@ -9,6 +9,18 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .payment-qr-panel{margin:22px 0;padding:22px 16px;border:1px solid #e5e5e5;border-radius:8px;background:#fafafa}
+    .payment-qr-panel h2{margin:0 0 8px;color:#171717;font-size:21px}
+    .payment-qr-panel svg{display:block;width:min(300px,100%);height:auto;margin:15px auto;background:#fff;border:1px solid #ddd}
+    .payment-qr-panel small{margin-top:8px}
+    .payment-copy-btn{display:block;width:100%;min-height:48px;margin-top:12px;border:2px solid #222;border-radius:8px;background:#fff;color:#222;font:inherit;font-weight:850;cursor:pointer}
+    .payment-copy-btn:hover{background:#f4f4f4}
+    .payment-upi-btn{margin-top:13px;background:#fff;color:var(--red)}
+    .payment-upi-btn:hover{background:#fff6f6;color:var(--red)}
+    .payment-method-heading{margin:22px 0 4px;font-size:18px;color:#171717}
+    .payment-upi-value{overflow-wrap:anywhere}
+  </style>
 </head>
 <body data-page="payment">
 <header class="site-header">
@@ -59,23 +71,24 @@
             </div>
           </div>
 
+          <section class="payment-qr-panel" aria-labelledby="qrTitle">
+            <h2 id="qrTitle">PAY USING QR CODE</h2>
+            <p id="qrHelp">Enter the student name and amount above to display your payment QR code.</p>
+            <div id="qrCode" role="img" aria-label="Payment QR code appears after entering the student name and amount"></div>
+            <small>Scan with a UPI app. The amount and student name will be included automatically.</small>
+          </section>
+
           <div class="payment-payee" aria-label="Payment recipient details">
-            <p><strong>UPI ID:</strong> <span>ascendgangtok@axl</span></p>
+            <p><strong>UPI ID:</strong> <span id="upiId" class="payment-upi-value">ascendgangtok@axl</span></p>
             <p><strong>Account Holder:</strong> Mani K Chettri</p>
             <p><strong>Bank:</strong> State Bank of India</p>
+            <button id="copyUpiBtn" class="payment-copy-btn" type="button">COPY UPI ID</button>
           </div>
 
-          <a id="payBtn" class="payment-upi-btn is-disabled" href="#" aria-disabled="true">Pay with UPI App</a>
-          <p class="payment-small-note">The entered amount will be filled automatically in the UPI app.</p>
-
-          <div class="payment-or" aria-hidden="true"><span>OR</span></div>
-
-          <button id="qrToggleBtn" class="payment-qr-btn" type="button" aria-expanded="false" aria-controls="qrPanel">Pay using QR Code</button>
-          <div id="qrPanel" class="payment-qr-panel" hidden>
-            <p id="qrHelp">Scan the QR code and enter the amount shown above.</p>
-            <img src="assets/upi-payment-qr.png" alt="Ascend Institute UPI QR code" width="410" height="410">
-            <small>Ascend Institute<br>ascendgangtok@axl</small>
-          </div>
+          <h2 class="payment-method-heading">Optional: Open UPI App</h2>
+          <a id="payBtn" class="payment-upi-btn is-disabled" href="#" aria-disabled="true">OPEN UPI APP</a>
+          <p class="payment-small-note">If your UPI app does not accept the direct payment link, please scan the QR code or use the UPI ID above.</p>
+          <p class="payment-small-note">Ascend Institute will confirm payment after checking it.</p>
 
           <div id="paymentMessage" class="payment-validation" role="status" aria-live="polite"></div>
         </div>
@@ -112,6 +125,8 @@
 
 <a class="floating-whatsapp whatsapp-link" href="#" data-message="Hello Ascend Institute, I need help with a tuition fee payment." aria-label="Contact Ascend Institute on WhatsApp"><span data-icon="whatsapp"></span></a>
 <script src="script.js"></script>
+<!-- Local MIT-licensed QR generator keeps amount-filled payment codes available without a third-party service. -->
+<script src="assets/qrcode-generator.js"></script>
 <script>
 (() => {
   'use strict';
@@ -122,9 +137,9 @@
   const nameEl = document.getElementById('studentName');
   const amountEl = document.getElementById('amount');
   const payBtn = document.getElementById('payBtn');
-  const qrToggleBtn = document.getElementById('qrToggleBtn');
-  const qrPanel = document.getElementById('qrPanel');
+  const qrCode = document.getElementById('qrCode');
   const qrHelp = document.getElementById('qrHelp');
+  const copyUpiBtn = document.getElementById('copyUpiBtn');
   const message = document.getElementById('paymentMessage');
 
   const cleanAmount = value => {
@@ -149,8 +164,9 @@
 
     if (!student || !amount || amount > MAX_AMOUNT) {
       setDisabled(true);
+      qrCode.replaceChildren();
       if (amount > MAX_AMOUNT) message.textContent = 'Please check the amount entered.';
-      qrHelp.textContent = amount ? `Scan the QR code and pay ${formatAmount(amount)}.` : 'Scan the QR code and enter the amount shown above.';
+      qrHelp.textContent = 'Enter the student name and a valid amount above to display your payment QR code.';
       return;
     }
 
@@ -161,9 +177,14 @@
       cu: 'INR',
       tn: `Tuition Fee - ${student}`
     });
-    payBtn.setAttribute('href', `upi://pay?${params.toString()}`);
+    const upiUri = `upi://pay?${params.toString()}`;
+    const code = qrcode(0, 'M');
+    code.addData(upiUri, 'Byte');
+    code.make();
+    qrCode.innerHTML = code.createSvgTag({cellSize: 6, margin: 24, scalable: true, alt: 'Scan to pay Ascend Institute'});
+    payBtn.setAttribute('href', upiUri);
     setDisabled(false);
-    qrHelp.textContent = `Scan the QR code and pay ${formatAmount(amount)}.`;
+    qrHelp.textContent = `Scan to pay ${formatAmount(amount)} for ${student}.`;
   }
 
   amountEl.addEventListener('input', () => {
@@ -182,13 +203,13 @@
     }
   });
 
-  qrToggleBtn.addEventListener('click', () => {
-    const opening = qrPanel.hasAttribute('hidden');
-    if (opening) qrPanel.removeAttribute('hidden');
-    else qrPanel.setAttribute('hidden', '');
-    qrToggleBtn.setAttribute('aria-expanded', String(opening));
-    qrToggleBtn.textContent = opening ? 'Hide QR Code' : 'Pay using QR Code';
-    if (opening) qrPanel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  copyUpiBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(UPI_ID);
+      message.textContent = 'UPI ID copied.';
+    } catch {
+      message.textContent = `Please copy the UPI ID shown above: ${UPI_ID}`;
+    }
   });
 
   const query = new URLSearchParams(window.location.search);
@@ -196,6 +217,7 @@
   const prefillAmount = (query.get('amount') || '').replace(/[^0-9.]/g, '').slice(0, 9);
   if (prefillName) nameEl.value = prefillName;
   if (prefillAmount) amountEl.value = prefillAmount;
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];
   updatePayment();
 })();
 </script>
