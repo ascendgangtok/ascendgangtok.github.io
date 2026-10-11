@@ -7,3 +7,6 @@ Teachers-photos-and-CVs/
 
 # Raw source photographs (large, unedited). Only the optimised copies in assets/ are published.
 assets/some-photos/
+
+# Optimised photos waiting for publication consent (restore into assets/ once approved).
+pending-approval/

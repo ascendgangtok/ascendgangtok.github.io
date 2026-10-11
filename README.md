@@ -359,3 +359,30 @@ save if the sheet is shared by link.
   the card, away from the logo, and no overall "Google rating" is shown,
   as Google's guidelines require.
 
+## Temporary publication safeguards (11 October 2026)
+- **Photos awaiting consent.** Optimised photos showing identifiable
+  students or teachers whose consent is not yet confirmed are kept in
+  `pending-approval/` (ignored by Git, never published):
+  `class-group.jpg`, `class-practice.jpg`, `class-students-attentive.jpg`,
+  `class-teaching-board*.jpg`, `class-teacher-writing.jpg` and the faculty
+  photos of Panjo Lepcha, Joneswar Basumatary, Darpan Dahal, Mang Semi
+  Subba and Pranika Gurung. Until then:
+  - homepage collage: `photo-classroom.jpg` (consented),
+    `class-periodic-table.jpg` and `class-whiteboard.jpg` (no faces);
+  - About keeps `photo-mentoring.jpg`; Courses has a text-only header;
+    the Winter page has no photo;
+  - the Faculty page shows placeholder graphics except for MK Chettri.
+  To restore an approved photo, move it back from `pending-approval/assets/`
+  to `assets/` and put its `<img>` back (the earlier markup is in the local
+  branch `backup/3680ad8-with-photos`, which must never be pushed).
+- **Home Tuition registration paused.** The live Home Tuition Apps Script
+  still replies only to `ascendgangtok.github.io`, so parents on
+  ascendgangtok.com never see the confirmation. The page shows a WhatsApp
+  and phone fallback instead. After redeploying the existing deployment
+  with `registration_related/AscendHomeTuitionRegistration.FIXED-2026-10.gs`
+  (Deploy → Manage deployments → Edit → New version), remove
+  `class="ht-paused"` from `<body>` in `home-tuition-registration.html`.
+- **HTTPS.** The registration and payment pages switch any `http://` visit
+  to `https://` before showing the form. GitHub Pages "Enforce HTTPS"
+  still needs to be ticked by a repository admin.
+
