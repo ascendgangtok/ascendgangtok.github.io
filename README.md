@@ -6,18 +6,20 @@ This edition keeps the approved red/black/white visual style but separates the c
 - `index.html` — concise homepage
 - `about.html` — institute overview and academic approach
 - `courses.html` — course categories and enquiry links
+- `winter-crash-course-2026-27.html` — Winter Crash Course 2026–27 (Classes 10 and 12)
+- `winter-crash-course-registration.html` — Winter Crash Course online admission and seat booking (noindex)
 - `notes.html` — study notes hub (browse by class/subject)
 - `quizzes.html` — 14 class-wise interactive quizzes
 - `question-papers.html` — 14 printable practice papers and a combined PDF
 - `notes-cbse10-maths.html` — CBSE Class 10 Maths chapter list
 - `notes-cbse10-maths-real-numbers.html` — Real Numbers chapter notes, with PDF download
 - `home-tuition.html` — detailed page for the finest service
-- `faculty.html` — faculty profiles, rendered automatically from `faculty-data.js`
-- `results.html` — verified results/testimonial placeholders
+- `faculty.html` — Meet Our Teachers: nine teacher profiles written directly in the page
+- `results.html` — Results & Testimonials: selected Google Maps reviews; verified results to be added later
 - `contact.html` — contact cards, map and WhatsApp enquiry form
 
 ## Publishing
-Publish all public files and the `assets` folder together at the root of the existing `ascendgangtok/ascendgangtok.github.io` GitHub Pages repository. The current public URL is `https://ascendgangtok.github.io/`. The custom domain `ascendgangtok.com` is not configured in GitHub Pages and does not currently resolve, so canonical URLs, sharing metadata, `robots.txt`, and `sitemap.xml` use the working Pages URL. Update those URLs and add `CNAME` only after DNS and Pages custom-domain configuration are ready.
+The site is published by GitHub Pages from the `main` branch (root folder) of `ascendgangtok/ascendgangtok.github.io`. The official address is `https://ascendgangtok.com/`; the `CNAME` file holds this custom domain and must not be deleted. The old address `https://ascendgangtok.github.io/` redirects to the custom domain. Canonical URLs, sharing metadata, JSON-LD, `robots.txt` and `sitemap.xml` all use `https://ascendgangtok.com/`. DNS is managed at GoDaddy.
 
 ## Before launch
 1. Add confirmed faculty details and photographs.
@@ -47,23 +49,29 @@ This package was rechecked for ZIP integrity, internal file references, navigati
 - No analytics installed yet (skipped per request) — add a GA4 Measurement ID (or a privacy-friendly alternative) later if you want to see which pages/CTAs drive WhatsApp enquiries.
 - Confirm business hours if you want them added to the schema.org data.
 
-## 2026-08-07 update: adding faculty without a backend
-There is no login system and no server — that's intentional, since a
-handful of teachers don't need real authentication infrastructure.
-Instead, the Faculty page is generated from a single plain data file:
+## Faculty page (updated October 2026)
+The nine teacher profiles are written directly in `faculty.html`, so
+search engines and visitors see them without JavaScript. The earlier
+`faculty-data.js` placeholder file has been removed.
 
-1. Open `faculty-data.js`. Each teacher is one `{ ... }` block with
-   plain-text fields (name, role, bio, classes, board, subject, photo).
-   Full instructions are in the comment at the top of that file.
-2. If using a photo, drop the image file into `assets/faculty/` and
-   point the `photo` field at it, e.g. `"assets/faculty/priya-sharma.jpg"`.
-   Leave `photo` as `""` to show a placeholder icon instead.
-3. Save, commit, and push to GitHub. The Faculty page rebuilds itself
-   from that file automatically — no other file needs to change.
+1. Each teacher is one `<article class="teacher-card">` block in
+   `faculty.html`, in display order. Copy a whole block to add a teacher,
+   or delete one to remove a teacher.
+2. Use only confirmed details: name, faculty role, qualifications,
+   research area (only for doctoral researchers) and teaching experience.
+   Do not list universities or colleges.
+3. Photos are in `assets/faculty/` (240 x 240 JPEG, cropped square).
+   Teachers without a photo show `placeholder-male.svg` or
+   `placeholder-female.svg`. See `assets/faculty/README.txt`.
+4. If a teacher changes, also update the JSON-LD `employee` list in the
+   `<head>` of `faculty.html` (same order), and the summary sentence on
+   the homepage ("Our nine qualified and experienced teachers...").
 
-Only publish a teacher's name/photo once their details are confirmed
-and, if a photo is used, once you have their permission — same rule
-the Results page already follows for students.
+Only publish a teacher's name and photo once their details are confirmed
+and, if a photo is used, once you have their permission.
+
+The original photos and CVs are kept in `Teachers-photos-and-CVs/`,
+which is listed in `.gitignore` and must never be committed or published.
 
 ## 2026-08-08 update: Study Notes section
 Added a Study Notes section with all 14 CBSE Class 10 Mathematics
@@ -141,7 +149,7 @@ corresponding NCERT textbook reprints.
 ## Tuition fee payment page
 
 - `payment.html` is the standalone tuition-fee payment page intended to be shared directly with parents.
-- Public URL after publishing: `https://ascendgangtok.github.io/payment.html`
+- Public URL: `https://ascendgangtok.com/payment.html`
 - Optional prefill: `payment.html?name=Student%20Name&amount=9000`
 - The page prepares a UPI payment to `ascendgangtok@axl` (Mani K Chettri, State Bank of India).
 - The amount-filled QR code is shown as the primary method after the student name and amount are entered. It is generated in the browser by the locally included MIT-licensed `assets/qrcode-generator.js`, so no third-party QR service receives payment details.
@@ -152,7 +160,7 @@ corresponding NCERT textbook reprints.
 
 ## Home Tuition registration on GitHub Pages
 
-- `home-tuition-registration.html` calculates an estimated monthly fee and prepares the completed registration request as a WhatsApp message to Ascend Institute. The parent must open WhatsApp and tap Send. The site does not save the form or generate a registration reference.
+- `home-tuition-registration.html` calculates an estimated monthly fee and submits the registration to the institute's Google Apps Script web app, which records it and returns a registration ID (format `HT-YYYYMMDD-NNN`). The parent is then sent to `payment.html` with the student name and amount filled in.
 - Ascend Institute confirms the registration and fee with the parent before payment. The registration page links to `payment.html` for use after confirmation.
 - `payment.html` prepares a UPI payment or displays the payment QR. Payment receipt must be verified by the institute; the static site cannot verify it.
 - The earlier PHP registration endpoint was removed from the public package because GitHub Pages cannot execute it. The earlier registration package is retained in the local source archive outside this public repository.
@@ -161,7 +169,193 @@ corresponding NCERT textbook reprints.
 
 The public footer includes a discreet **Student Services** section with:
 
-- `home-tuition-registration.html` — Home Tuition registration request via WhatsApp
+- `home-tuition-registration.html` — Home Tuition registration (recorded through Google Apps Script)
 - `payment.html` — standalone tuition-fee payment page
 
 These links are intentionally kept out of the main navigation. The registration and payment pages remain marked `noindex` so they are available to families without being treated as normal public landing pages by search engines. `noindex` does not make them private; anyone with the URL can open them.
+
+## 2026-10 update: Winter Crash Course, reviews and custom domain
+- Added `winter-crash-course-2026-27.html`, linked from the homepage, the
+  Courses page, the footer of every page and `sitemap.xml`.
+- The 20% early-admission concession notice appears five times (homepage,
+  Courses page, twice on the Winter Crash Course page and once on the
+  online admission form). Each copy sits
+  between `<!-- OFFER 2026-10-31 START -->` and `<!-- OFFER 2026-10-31 END -->`
+  comments, is hidden in the HTML (`hidden`) and is shown by `script.js`
+  only before `data-until="2026-10-31T23:59:59+05:30"`. After that time
+  the script removes it, and the notice text itself states the deadline.
+- **Removal procedure (do this on 1 November 2026, do not rely on the
+  script alone):** in the project folder run
+
+  ```
+  python3 - <<'EOF'
+  import re,glob
+  for f in glob.glob('*.html'):
+      s=open(f,encoding='utf-8').read()
+      t=re.sub(r'[ \t]*<!-- OFFER 2026-10-31 START.*?<!-- OFFER 2026-10-31 END -->\n','',s,flags=re.S)
+      if t!=s: open(f,'w',encoding='utf-8').write(t); print('updated',f)
+  EOF
+  ```
+
+  Then check that `grep -l "20%" *.html` prints nothing, preview the
+  site, commit and push. To publish a new offer instead, replace the
+  text between the markers and change the date in the markers and in
+  `data-until`.
+- After the season, update or retire the Winter Crash Course page and
+  the homepage and Courses page sections.
+- Added `reviews-data.js`, the single list of student reviews used by
+  the homepage, `results.html` and the Winter Crash Course page. Each
+  review is copied exactly from the Google Maps listing "Ascend Coaching,
+  Gangtok". Instructions are at the top of that file. Google's guidance
+  is that reviewers own their reviews, so get each reviewer's consent
+  before showing their review. Every review starts as
+  `permission:"pending"`. On ascendgangtok.com only reviews set to
+  `permission:"granted"` are displayed; local previews show all reviews
+  with a "permission pending" label.
+- No `Review` or `AggregateRating` structured data is used. Google does
+  not allow a business to mark up reviews about itself on its own site.
+- Replaced all `ascendgangtok.github.io` URLs with `ascendgangtok.com`.
+
+## Winter Crash Course online admission (October 2026)
+
+Parents can register online, pay the ₹2,500 initial amount by UPI and
+send the payment screenshot on WhatsApp, without visiting the institute.
+
+Status (October 2026): the Apps Script web app is deployed (Version 1)
+and connected in `winter-crash-course-registration.js`. A real test
+registration, the duplicate check and the concession formulas were
+checked on the real sheet, and the test row was then removed.
+
+### Files
+- `winter-crash-course-registration.html` and
+  `winter-crash-course-registration.js`: the form (marked `noindex`, not
+  in the sitemap). Linked from the Winter Crash Course page, the homepage
+  and the Courses page.
+- `winter-course-fees.js`: the only place the packages and fees are
+  defined. The form uses it to show fees, and an unchanged copy runs in
+  the Apps Script backend, which recalculates every fee before saving.
+  If a fee changes, edit this file, change `WINTER_FEES_VERSION`, and
+  paste the new copy into the Apps Script project. Registrations are
+  refused while the two versions differ.
+- Backend (kept outside this public repository, like the Home Tuition
+  script): `registration_related/winter-course/Code.gs`. It is a separate
+  Apps Script project with its own private Google Sheet, so Winter Course
+  and Home Tuition records never mix.
+
+### Payment rules used
+- Registration fee ₹500 (separate, not adjusted) + seat-booking advance
+  ₹2,000 (adjusted against the course fee) = ₹2,500 paid online.
+- Remaining course fee = course fee − ₹2,000, paid later as arranged with
+  the institute. The 60% instalment rule is not applied online.
+- When the institute enters an approved concession % in the sheet, the
+  remaining fee is recalculated and never goes below ₹0. If the reduced
+  course fee is less than the ₹2,000 advance, the difference appears in
+  "Excess Advance (resolve manually)" (highlighted). Nothing is refunded
+  or adjusted automatically.
+- Concessions are never applied by the form. The 20% early-admission
+  concession and BPL concessions are decided by the institute. The sheet
+  records whether the registration reached the server by 31 Oct 2026
+  (server time, for reference only) and whether the parent asked about a
+  BPL concession.
+
+### How a registration works
+1. The form sends the details to the Apps Script web app.
+2. The backend checks every field, the class, board and subject rules and
+   the fee, then saves a row and creates the registration ID
+   `WC-YYYYMMDD-NNN` (India date; the daily number never repeats, even
+   if a row is deleted).
+3. Only after the backend confirms the save does the page show the ID,
+   the ₹2,500 UPI QR code and link (UPI note: "Ascend WC-…"; no student
+   name), and a button to send the payment screenshot on WhatsApp with
+   the registration ID already in the message.
+4. When a screenshot arrives, the institute may type the UPI reference
+   in "UPI Reference Reported" and set the status to
+   "Payment Pending Verification".
+5. The institute checks the bank account. If ₹2,500 arrived, tick
+   "Payment Verified By Institute", set the status to
+   "Seat Booking Confirmed" and message the parent on WhatsApp.
+   (The backend's `reportPayment` action still exists but the form no
+   longer uses it.)
+
+Statuses: Registration Submitted → Payment Pending Verification → Seat
+Booking Confirmed (set by the institute only).
+
+Duplicate protection: a retried submission (same browser, same details)
+returns the same ID; the same student, WhatsApp number and course cannot
+register twice; at most 3 registrations per WhatsApp number per day and
+200 in total per day; a hidden honeypot field and a minimum fill time
+stop simple bots. The sheet must stay private: the script refuses to
+save if the sheet is shared by link.
+
+### One-time setup (institute Google account)
+1. Turn on **Enforce HTTPS** for the site in GitHub Pages settings.
+2. Go to https://script.google.com, signed in to the institute account,
+   and create a new project called "Ascend Winter Crash Course Admissions".
+3. Replace the contents of `Code.gs` with
+   `registration_related/winter-course/Code.gs`.
+4. Add a script file named `WinterCourseFees` and paste the whole of
+   `winter-course-fees.js` into it. In Project Settings tick "Show
+   appsscript.json manifest file in editor" and replace that file with
+   `registration_related/winter-course/appsscript.json`, which limits the
+   script to Google Sheets plus read-only Drive access.
+5. Project Settings: set the time zone to (GMT+05:30) India Standard Time.
+6. In the editor choose `setupWinterAdmissionsSheet` and press Run. Allow
+   the requested access (Sheets and Drive). A private sheet called
+   "Ascend Winter Crash Course 2026-27 Admissions" is created in Drive.
+   Share it only with named staff accounts, never "anyone with the link".
+7. Deploy → New deployment → Web app. Execute as: Me. Who has access:
+   Anyone. Copy the web app URL (it ends in `/exec`).
+8. Paste that URL into `WINTER_REGISTRATION_URL` at the top of
+   `winter-crash-course-registration.js`. Until this is done the form
+   shows "Online registration is being set up" and cannot submit.
+9. Make one test registration with an institute phone number, check the
+   row in the sheet, then delete the test row (right-click the row
+   number → Delete row). Its ID is never issued again.
+10. After any later change to `Code.gs` or the fees file: Deploy → Manage
+    deployments → Edit → Version: New version. The URL stays the same.
+
+### Limitations
+- The web app URL is public (it has to be, for a static site). The limits
+  above reduce abuse, but there is no CAPTCHA.
+- Parents cannot look up their status online: the backend never returns
+  stored data. Status changes are communicated on WhatsApp.
+- The payment step is kept only in the same browser tab (no personal
+  details are stored in the browser). Parents should note their
+  registration ID; the WhatsApp button includes it.
+- UPI payment cannot be verified automatically; the institute must check
+  the bank account.
+
+## Photographs (October 2026)
+- Raw photographs are kept in `assets/some-photos/` (ignored by Git, never
+  published). Only resized, optimised copies are placed in `assets/`.
+- Homepage hero: a three-photo collage (`class-teaching-board.jpg` with a
+  760px version for phones, `class-students-attentive.jpg`,
+  `class-teacher-writing.jpg`), from `3.png`, `2.png` and `1.png`, lightly
+  cropped with a small contrast and colour lift; faces were not altered.
+- About hero: `class-group.jpg` (from `unnamed (1).webp`).
+- Courses hero: `photo-classroom.jpg` (no longer used on the homepage).
+- Winter Crash Course page, "What the course includes": `class-practice.jpg`
+  (from `unnamed.webp`).
+- `photo-mentoring.jpg` is no longer shown on a page; it is a mirrored
+  selfie (the signboard text reads backwards). `hero-classroom.jpg` and
+  `home-tuition.jpg` are the old AI-generated stock images; `home-tuition.jpg`
+  is still used on the homepage and Home Tuition page until a real photo
+  is available.
+- Before publishing, confirm consent for every identifiable student
+  (especially minors) and teacher in these photographs.
+
+## Reviews display (October 2026)
+- The Winter Crash Course page shows "What Our Students Say" with the
+  reviews that have a `winter` number in `reviews-data.js` (Rakha Rai,
+  Eunish Pradhan, Rochna Sharma, Sanchali Sanju). Only Rakha Rai's review
+  is about winter coaching, and only that card says so.
+- Permission status is no longer shown as a badge. It stays in
+  `reviews-data.js`; the live site still shows only `permission:"granted"`
+  reviews. With none granted, the Winter page shows a link to the Google
+  Maps reviews instead.
+- Each card says "Review on Google" with the official Google G
+  (`assets/google-g.png`, downloaded from Google's Partner Marketing Hub,
+  scaled only, with its built-in clear space). The stars sit at the top of
+  the card, away from the logo, and no overall "Google rating" is shown,
+  as Google's guidelines require.
+

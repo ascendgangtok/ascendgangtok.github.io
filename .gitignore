@@ -1,3 +1,9 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Private source material: teacher photos and CVs. Never commit.
+Teachers-photos-and-CVs/
+
+# Raw source photographs (large, unedited). Only the optimised copies in assets/ are published.
+assets/some-photos/
