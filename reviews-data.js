@@ -30,41 +30,36 @@
     permission - "pending" until the reviewer has agreed to their review
                being shown on this website, then "granted".
 
-  PERMISSION: Google's guidance is that reviews belong to the people who
-  wrote them, and a business must get the reviewer's consent before
-  using a review on its own website. You can ask by replying to the
-  review on Google. On ascendgangtok.com only reviews marked
-  permission:"granted" are shown. In local preview every complete
-  review is shown so the layout can be checked; permission status is
-  never displayed on the page (it stays in this file). If no review on a
-  page has permission, the homepage section is hidden and the Results
-  and Winter pages show a link to our reviews on Google instead.
+  Publication consent for the 12 complete reviews selected with show:"home"
+  or show:"results" was confirmed by the institute on 12 October 2026.
+  Only complete, selected reviews marked permission:"granted" are rendered,
+  in both local preview and production. Permission status stays internal.
 */
 const googleListingUrl = "https://maps.app.goo.gl/xoUGktQBaNF6AnrW9";
 const reviewsData = [
-  { name:"Rakha Rai", rating:5, complete:true, permission:"pending", show:"home", winter:1, context:"About winter coaching",
+  { name:"Rakha Rai", rating:5, complete:true, permission:"granted", show:"home", winter:1, context:"About winter coaching",
     text:"Winter coaching for PCB was really helpful. Concepts in Physics, Chemistry, and Biology were explained clearly, and doubts were handled patiently. It made my basics stronger and boosted my confidence. Grateful for the guidance" },
-  { name:"Rochna Sharma", rating:5, complete:true, permission:"pending", show:"home", winter:3,
+  { name:"Rochna Sharma", rating:5, complete:true, permission:"granted", show:"home", winter:3,
     text:"I study here. I found this institute good for coaching. Teachers are really good and experienced. I am glad to be its part." },
-  { name:"Eunish Pradhan", rating:5, complete:true, permission:"pending", show:"home", winter:2,
+  { name:"Eunish Pradhan", rating:5, complete:true, permission:"granted", show:"home", winter:2,
     text:"Good center for every classes. Got improved in physics and chemistry effectively." },
-  { name:"Sanchali Sanju", rating:5, complete:true, permission:"pending", show:"home", winter:4,
+  { name:"Sanchali Sanju", rating:5, complete:true, permission:"granted", show:"home", winter:4,
     text:"Me and my friend, Rochna do our tuition classes here. Good location and infrastructure is really good. Teachers are supportive here." },
-  { name:"Eden Lepcha", rating:5, complete:true, permission:"pending", show:"results",
+  { name:"Eden Lepcha", rating:5, complete:true, permission:"granted", show:"results",
     text:"I had a great experience here. The teachers are also very good, nice and helpful.I enjoyed studying here a lot." },
-  { name:"Nikhil Kumar", rating:5, complete:true, permission:"pending", show:"results",
+  { name:"Nikhil Kumar", rating:5, complete:true, permission:"granted", show:"results",
     text:"The explanation is well structured,and explanations are clear and easy to understand.Thank you for teaching us I am satisfied with your teaching skills ❤️❤️🙏" },
-  { name:"Abhinov Gurung", rating:5, complete:true, permission:"pending", show:"results",
+  { name:"Abhinov Gurung", rating:5, complete:true, permission:"granted", show:"results",
     text:"Very professional and supportive throughout the sessions." },
-  { name:"Akash Kumar Singh", rating:5, complete:true, permission:"pending", show:"results",
+  { name:"Akash Kumar Singh", rating:5, complete:true, permission:"granted", show:"results",
     text:"Very good Coaching centre and satisfied with the best teachers skills and the teachers are also very nice to students." },
-  { name:"Reema Lamichaney", rating:5, complete:true, permission:"pending", show:"results",
+  { name:"Reema Lamichaney", rating:5, complete:true, permission:"granted", show:"results",
     text:"According to my experience it is very nice !!And way of teaching skills is also good!!" },
-  { name:"Saiswarupa Rout", rating:5, complete:true, permission:"pending", show:"results",
+  { name:"Saiswarupa Rout", rating:5, complete:true, permission:"granted", show:"results",
     text:"This is the apex of education, the teachers are very good and understanding. Please provide your child with the best education with Ascend" },
-  { name:"Tshering ongmu Sherpa", rating:5, complete:true, permission:"pending", show:"results",
+  { name:"Tshering ongmu Sherpa", rating:5, complete:true, permission:"granted", show:"results",
     text:"It was a very nice coaching and the teachers are very cool" },
-  { name:"Shanvi Rai", rating:5, complete:true, permission:"pending", show:"results",
+  { name:"Shanvi Rai", rating:5, complete:true, permission:"granted", show:"results",
     text:"nice coaching will come here for boards" },
   // Kept for reference, not displayed:
   // Same wording as Akash Kumar Singh's review, so only one copy is shown.
