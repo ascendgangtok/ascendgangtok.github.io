@@ -384,9 +384,10 @@ save if the sheet is shared by link.
 
 ## Reviews and consistency update (12 October 2026)
 - All 16 selected Google reviews remain in `reviews-data.js`, unchanged.
-  Every review is still `permission:"pending"`, so on ascendgangtok.com the
-  homepage and Winter review sections stay hidden and the Results page
-  shows one sentence linking to the Google Business Profile. Cards show
+  On 12 October 2026 the institute confirmed reviewer consent for the 12
+  selected reviews, which are now `permission:"granted"` and shown on the
+  homepage (4), Results page (all 12) and Winter page (4). The two
+  reference-only and two truncated reviews remain unpublished. Cards show
   the reviewer's name, star rating and original wording, with one small
   "Reviews posted ... on Google" source line below them. To publish a review, reply to it on
   Google asking the reviewer's permission; once they agree, change that
