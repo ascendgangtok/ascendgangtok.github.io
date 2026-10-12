@@ -366,8 +366,6 @@ save if the sheet is shared by link.
   `class-teacher-writing.jpg`. Faculty portraits were approved for
   publication on 12 October 2026; Khushi Gurung and Pratima Sharma use
   placeholders because no photo was supplied. Until then:
-  - homepage collage: `photo-classroom.jpg` (consented),
-    `class-periodic-table.jpg` and `class-whiteboard.jpg` (no faces);
   - About keeps `photo-mentoring.jpg`; Courses has a text-only header;
     the Winter page has no photo;
   To restore an approved photo, move it back from `pending-approval/assets/`
@@ -402,4 +400,14 @@ save if the sheet is shared by link.
   page (canonical tags point to the `.html` address, so there is no
   duplicate content). Internal links keep `.html`; links to the homepage
   now point to `/` instead of `index.html`.
+
+## Homepage collage (12 October 2026)
+- Four photographs from `assets/some-photos/` (publication permission
+  confirmed by the institute), cropped without altering anyone:
+  `collage-teaching.jpg` (from `3.png`), `collage-students.jpg` (`2.png`),
+  `collage-practice.jpg` (`unnamed.webp`) and `collage-writing.jpg`
+  (`1.png`), each with a smaller `-480`/`-400` version for phones.
+- Layout: a staggered 2 x 2 mosaic (wide + narrow on the top row, narrow +
+  wide below), edge to edge, no borders or fade. Its height follows the
+  hero text on desktop; it is a 4:3 block on tablets and a square on phones.
 
