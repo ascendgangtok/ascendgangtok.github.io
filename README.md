@@ -14,7 +14,7 @@ This edition keeps the approved red/black/white visual style but separates the c
 - `notes-cbse10-maths.html` — CBSE Class 10 Maths chapter list
 - `notes-cbse10-maths-real-numbers.html` — Real Numbers chapter notes, with PDF download
 - `home-tuition.html` — detailed page for the finest service
-- `faculty.html` — Meet Our Teachers: nine teacher profiles written directly in the page
+- `faculty.html` — Meet Our Teachers: ten teacher profiles written directly in the page
 - `results.html` — Results & Testimonials: selected Google Maps reviews; verified results to be added later
 - `contact.html` — contact cards, map and WhatsApp enquiry form
 
@@ -50,7 +50,7 @@ This package was rechecked for ZIP integrity, internal file references, navigati
 - Confirm business hours if you want them added to the schema.org data.
 
 ## Faculty page (updated October 2026)
-The nine teacher profiles are written directly in `faculty.html`, so
+The ten teacher profiles are written directly in `faculty.html`, so
 search engines and visitors see them without JavaScript. The earlier
 `faculty-data.js` placeholder file has been removed.
 
@@ -65,7 +65,7 @@ search engines and visitors see them without JavaScript. The earlier
    `placeholder-female.svg`. See `assets/faculty/README.txt`.
 4. If a teacher changes, also update the JSON-LD `employee` list in the
    `<head>` of `faculty.html` (same order), and the summary sentence on
-   the homepage ("Our nine qualified and experienced teachers...").
+   the homepage ("Our ten qualified and experienced teachers...").
 
 Only publish a teacher's name and photo once their details are confirmed
 and, if a photo is used, once you have their permission.
@@ -366,7 +366,7 @@ save if the sheet is shared by link.
   `class-group.jpg`, `class-practice.jpg`, `class-students-attentive.jpg`,
   `class-teaching-board*.jpg`, `class-teacher-writing.jpg` and the faculty
   photos of Panjo Lepcha, Joneswar Basumatary, Darpan Dahal, Mang Semi
-  Subba and Pranika Gurung. Until then:
+  Subba, Pranika Gurung, Pema Phuti Sherpa and Anjana Chettri. Until then:
   - homepage collage: `photo-classroom.jpg` (consented),
     `class-periodic-table.jpg` and `class-whiteboard.jpg` (no faces);
   - About keeps `photo-mentoring.jpg`; Courses has a text-only header;
