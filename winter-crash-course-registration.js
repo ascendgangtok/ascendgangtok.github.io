@@ -163,7 +163,8 @@
     el.setCustomValidity((v || required) && !normalisePhone(v) ? 'Please enter a valid 10-digit Indian mobile number.' : '');
   }
   $('phone').addEventListener('input', () => checkPhone($('phone'), true));
-  $('altPhone').addEventListener('input', () => checkPhone($('altPhone'), false));
+  $('studentPhone').addEventListener('input', () => checkPhone($('studentPhone'), false));
+  $('address').addEventListener('input', () => $('address').setCustomValidity(''));
 
   // ---------- Submission ----------
   function uuid() {
@@ -183,8 +184,8 @@
 
   const CONTACT = 'call or WhatsApp <a href="tel:+917797898999"><b>77978 98999</b></a>';
   const FIELD_NAMES = {studentName: 'student name', guardianName: 'parent / guardian name', schoolName: 'school name',
-    phone: 'WhatsApp number', altPhone: 'alternate contact number', email: 'email', locality: 'locality',
-    preferredSubjects: 'preferred subjects', academicNote: 'academic requirement', declaration: 'declaration',
+    phone: 'parent / guardian WhatsApp number', studentPhone: 'student WhatsApp number', address: 'residential address',
+    preferredSubjects: 'preferred subjects', declaration: 'declaration',
     className: 'class', board: 'board', course: 'course and subjects'};
   function messageFor(code, field) {
     switch (code) {
@@ -224,7 +225,8 @@
     if (pending || saved) return;
     clearError();
     checkPhone($('phone'), true);
-    checkPhone($('altPhone'), false);
+    checkPhone($('studentPhone'), false);
+    $('address').setCustomValidity($('address').value.trim() ? '' : 'Please enter your residential address.');
     if (!form.reportValidity()) return;
     const sel = selection();
     const q = updateFee();
@@ -242,12 +244,12 @@
     submissionKey = submissionKey || uuid();
     const payload = {
       action: 'register', submissionKey, website: $('wcrWebsite').value, elapsedMs: Date.now() - startedAt,
-      feesVersion: WINTER_FEES_VERSION, studentName: v('studentName'), guardianName: v('guardianName'),
-      phone: normalisePhone(v('phone')), altPhone: v('altPhone') ? normalisePhone(v('altPhone')) : '',
-      email: v('email'), locality: v('locality'), schoolName: v('schoolName'),
+      feesVersion: WINTER_FEES_VERSION, formVersion: 2, studentName: v('studentName'), guardianName: v('guardianName'),
+      phone: normalisePhone(v('phone')), studentPhone: v('studentPhone') ? normalisePhone(v('studentPhone')) : '',
+      address: v('address'), schoolName: v('schoolName'),
       className: classEl.value, board: boardEl.value, course: sel.course,
       preferredSubjects: WINTER_COURSES[sel.course].countOnly ? v('preferredSubjects') : '',
-      academicNote: v('academicNote'), bplEnquiry: $('bplEnquiry').checked, declaration: $('declaration').checked,
+      bplEnquiry: $('bplEnquiry').checked, declaration: $('declaration').checked,
       quotedCourseFee: q.courseFee, quotedInitialPayment: q.initialPayment
     };
     if ('subjectCount' in sel) payload.subjectCount = sel.subjectCount;

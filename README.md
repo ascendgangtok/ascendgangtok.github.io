@@ -432,3 +432,16 @@ save if the sheet is shared by link.
   the UPI ID `ascendgangtok@axl` (with Copy UPI ID); 70769 42996 is shown
   as a payment-help number only, not as a UPI ID.
 
+## Winter admission form version 2 (requires backend version 2)
+- Fields: parent / guardian WhatsApp number (required), student WhatsApp
+  number (optional), residential address (required, up to 300
+  characters). Email, locality, alternate contact number and academic
+  requirement were removed. The form sends `formVersion: 2`.
+- Backend: `registration_related/winter-course/Code.gs` (version 2) adds
+  two sheet columns at the end, "Student WhatsApp No." and "Residential
+  Address", written automatically on the first version 2 registration.
+  Older columns and rows are not changed, and version 1 submissions are
+  still accepted. `doGet` reports "(form version 2)".
+- Publish this form only after the backend version 2 is deployed as a
+  new version of the existing web app deployment.
+

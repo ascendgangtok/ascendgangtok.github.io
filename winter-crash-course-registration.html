@@ -136,9 +136,8 @@
         <div class="wcr-field"><label for="schoolName">School name <span class="req">*</span></label><input id="schoolName" name="schoolName" maxlength="120" required autocomplete="off"></div>
         <div class="wcr-field"><label for="guardianName">Parent / guardian full name <span class="req">*</span></label><input id="guardianName" name="guardianName" maxlength="100" required autocomplete="name"></div>
         <div class="wcr-field"><label for="phone">Parent / guardian WhatsApp number <span class="req">*</span></label><input id="phone" name="phone" type="tel" inputmode="tel" maxlength="16" required autocomplete="tel" placeholder="10-digit mobile number"></div>
-        <div class="wcr-field"><label for="altPhone">Alternate contact number <span class="opt">(optional)</span></label><input id="altPhone" name="altPhone" type="tel" inputmode="tel" maxlength="16" autocomplete="off"></div>
-        <div class="wcr-field"><label for="email">Email <span class="opt">(optional)</span></label><input id="email" name="email" type="email" maxlength="120" autocomplete="email"></div>
-        <div class="wcr-field full"><label for="locality">Locality <span class="opt">(optional)</span></label><input id="locality" name="locality" maxlength="100" autocomplete="off" placeholder="For example, Tadong or Development Area"></div>
+        <div class="wcr-field"><label for="studentPhone">Student WhatsApp number <span class="opt">(optional)</span></label><input id="studentPhone" name="studentPhone" type="tel" inputmode="tel" maxlength="16" autocomplete="off" placeholder="If the student has one"></div>
+        <div class="wcr-field full"><label for="address">Residential address <span class="req">*</span></label><textarea id="address" name="address" rows="2" maxlength="300" required autocomplete="street-address" placeholder="House or building, area or locality, town"></textarea><p class="wcr-hint">Please include your area or locality.</p></div>
       </div>
     </section>
 
@@ -150,7 +149,6 @@
         <fieldset class="wcr-field full" id="courseWrap" hidden><legend class="wcr-legend">Course <span class="req">*</span></legend><div class="wcr-options" id="courseOptions"></div></fieldset>
         <fieldset class="wcr-field full" id="subjectWrap" hidden><legend class="wcr-legend" id="subjectLegend">Subjects <span class="req">*</span></legend><div class="wcr-options two" id="subjectOptions"></div><p class="wcr-hint" id="subjectHint"></p><p class="wcr-msg" id="subjectMsg" role="alert"></p></fieldset>
         <div class="wcr-field full" id="preferredWrap" hidden><label for="preferredSubjects">Preferred subjects <span class="opt">(optional)</span></label><input id="preferredSubjects" name="preferredSubjects" maxlength="150" autocomplete="off" placeholder="For example, Mathematics and Science"><p class="wcr-hint">The institute will confirm the subjects with you.</p></div>
-        <div class="wcr-field full"><label for="academicNote">Academic requirement <span class="opt">(optional)</span></label><textarea id="academicNote" name="academicNote" maxlength="500" placeholder="For example, how much of the syllabus is complete, or topics the student finds difficult"></textarea></div>
       </div>
     </section>
 
