@@ -207,4 +207,11 @@ p.review-source img{width:36px;height:36px;flex:0 0 36px;margin-right:-4px}
 @media(max-width:1000px){.t-card{flex-basis:calc((100% - 20px)/2)}}
 @media(max-width:620px){.t-card{flex-basis:100%;padding:20px 20px 22px}.t-track{gap:14px}}
 @media(prefers-reduced-motion:no-preference){.t-track{scroll-behavior:smooth}}
+/* Testimonials carousel, grouped pages: equal card widths and heights within each group */
+.testimonials .t-controls{margin:0 0 18px}
+.t-track{display:flex;gap:0;align-items:flex-start;padding:0;margin:0;transition:height .3s ease}
+.t-page{flex:0 0 100%;min-width:0;box-sizing:border-box;display:grid;grid-template-columns:repeat(var(--per,3),minmax(0,1fr));gap:20px;align-items:stretch;padding:4px 2px 12px;scroll-snap-align:start;scroll-snap-stop:always}
+.t-page .t-card{flex:none;width:auto;height:auto}
+@media(max-width:620px){.t-page{gap:14px}}
+@media(prefers-reduced-motion:reduce){.t-track{transition:none}}
 

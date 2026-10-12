@@ -288,7 +288,7 @@ stop simple bots. The sheet must stay private: the script refuses to
 save if the sheet is shared by link.
 
 ### One-time setup (institute Google account)
-1. Turn on **Enforce HTTPS** for the site in GitHub Pages settings.
+1. **Enforce HTTPS** is enabled in GitHub Pages settings (done; keep it on).
 2. Go to https://script.google.com, signed in to the institute account,
    and create a new project called "Ascend Winter Crash Course Admissions".
 3. Replace the contents of `Code.gs` with
@@ -378,9 +378,12 @@ save if the sheet is shared by link.
   with `registration_related/AscendHomeTuitionRegistration.FIXED-2026-10.gs`
   (Deploy → Manage deployments → Edit → New version), remove
   `class="ht-paused"` from `<body>` in `home-tuition-registration.html`.
-- **HTTPS.** The registration and payment pages switch any `http://` visit
-  to `https://` before showing the form. GitHub Pages "Enforce HTTPS"
-  still needs to be ticked by a repository admin.
+- **HTTPS.** GitHub Pages "Enforce HTTPS" is enabled (confirmed 12 October
+  2026): every `http://` address returns a 301 redirect to `https://`, and
+  the certificate covers ascendgangtok.com and www.ascendgangtok.com
+  (renewed automatically by GitHub). The registration and payment pages
+  also switch any `http://` visit to `https://` before showing the form.
+  Do not change the custom domain, DNS or the publishing source.
 
 ## Reviews and consistency update (12 October 2026)
 - All 16 selected Google reviews remain in `reviews-data.js`, unchanged.
@@ -427,6 +430,12 @@ save if the sheet is shared by link.
   Contact, Courses, Faculty, Winter Crash Course, Home Tuition, Results,
   Study Notes, Quizzes and Papers. Each page only needs the
   `data-testimonials` section and `reviews-data.js` before `script.js`.
+  Reviews are grouped by length (longest first) into "pages" of three
+  cards on desktop, two on tablets and one on phones; cards in a group
+  share one width and height, and the carousel height follows the visible
+  group. (Twelve reviews cannot be split into a mix of three- and
+  four-card groups without leaving a group of one or two, so desktop uses
+  three-card groups throughout.)
 - Payment: the unreliable "Open UPI app" buttons were removed from the
   admission success screen and `payment.html`. Payment is by QR code or
   the UPI ID `ascendgangtok@axl` (with Copy UPI ID); 70769 42996 is shown
