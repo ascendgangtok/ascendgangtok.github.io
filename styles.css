@@ -111,3 +111,47 @@
 .wcc-reviews>.btn{margin-top:22px}.reviews-empty p{margin:0;font-size:14.5px;color:var(--text)}
 @media(max-width:700px){.review-grid.two{grid-template-columns:1fr}}
 
+/* ===== Consistency and readability pass (October 2026) ===== */
+:root{--text-body:16px;--lh-body:1.6;--text-support:15px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* Ordinary descriptive text on the main pages */
+.hero p,.page-hero p,.service-hero p,.section-heading p,.content-block p,.feature-copy>p,.link-card p,.info-card p,.quote-panel p,.course-row p,.check-panel p,.process-grid p,.faq details p,.notice-panel p,.results-coming p,.results-note p,.location-copy p,.wcc-feature>div>p,.wcc-block>p,.programme-card p,.teachers-band p,.reviews-empty p,.review-card blockquote,.fact-card dd{font-size:var(--text-body);line-height:var(--lh-body)}
+.wcc-points li,.programme-card li,.course-row li,.wcc-facts dd,.wcc-glance dd{font-size:var(--text-support);line-height:1.55}
+.cta-band p{font-size:var(--text-support)}
+/* Space after a simple page header */
+.page-hero.simple{padding:64px 0 52px}
+.page-hero.simple+.section{padding-top:44px}
+/* Faculty cards: one structure for every teacher */
+.teacher-card{padding:28px 24px 26px}
+.teacher-photo{width:120px;height:120px;margin-bottom:16px}
+.teacher-card h3{font-size:19px;line-height:1.3}
+.teacher-role{font-size:12px;letter-spacing:1px;margin-top:6px}
+.teacher-quals{font-size:var(--text-body);line-height:1.55;padding-top:14px;margin-top:14px}
+.teacher-quals li{margin:2px 0}
+.teacher-research{font-size:var(--text-support);line-height:1.55;color:var(--muted);margin:8px 0 0}
+.teacher-card>.teacher-exp{margin:auto 0 0;padding:6px 14px;border:1px solid #f1d5d6;border-radius:999px;background:#fff7f7;color:var(--ink);font-size:14.5px;font-weight:650;line-height:1.4}
+.teacher-card>:nth-last-child(2){margin-bottom:18px}
+@media(min-width:1051px){.teacher-grid>.teacher-card:last-child:nth-child(3n+1){grid-column:2}}
+@media(max-width:560px){.teacher-card{padding:24px 18px 22px}.teacher-photo{width:108px;height:108px}}
+/* Course rows: tighter, readable, aligned buttons */
+.course-row{grid-template-columns:30px 62px minmax(0,1fr) 150px;gap:20px;padding:22px 26px}
+.course-number{font-size:12px}
+.course-row>div:nth-child(3)>span{font-size:10.5px}
+.course-row h3{margin:4px 0 6px}
+.course-row ul{gap:6px 18px;margin-top:10px}
+.course-row>.btn{width:150px;min-width:0;margin:0;padding:0 12px}
+@media(max-width:1050px){.course-row{grid-template-columns:30px 62px minmax(0,1fr)}.course-row>.btn{grid-column:3;justify-self:start}}
+@media(max-width:560px){.course-row{grid-template-columns:auto minmax(0,1fr);gap:12px 14px;padding:20px 18px}.course-row>.course-number{grid-column:1;grid-row:1}.course-row>.course-icon{grid-column:2;grid-row:1;justify-self:start;width:48px;height:48px}.course-row>.course-icon svg{width:24px;height:24px}.course-row>.course-icon.math{font-size:23px}.course-row>div:nth-child(3){grid-column:1/-1}.course-row>.btn{grid-column:1/-1;justify-self:start}}
+/* "Have this ready" checklist: two balanced columns */
+.check-panel.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 32px;padding:24px 28px}
+.check-panel.check-grid h3{grid-column:1/-1;margin-bottom:6px}
+.check-panel.check-grid p{margin:6px 0}
+@media(max-width:620px){.check-panel.check-grid{grid-template-columns:1fr;padding:22px 20px}}
+
+.check-panel [data-icon] svg{width:18px;height:18px;flex:0 0 18px}
+.section.compact-bottom{padding-bottom:36px}
+.reviews-cta{margin-top:22px}.reviews-centered .reviews-empty,.reviews-centered .reviews-cta{text-align:center}.reviews-empty p{color:var(--text)}
+/* Card headings sit above the 16px body text; supporting lines in benefit lists stay readable */
+.info-card h3,.process-grid h3{font-size:17px;line-height:1.35}
+.benefit-stack b{font-size:16px}.benefit-stack small{font-size:var(--text-support);line-height:1.5;margin-top:2px}
+.faq summary{font-size:var(--text-body);line-height:1.45}

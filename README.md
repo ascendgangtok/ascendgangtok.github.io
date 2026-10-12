@@ -336,11 +336,10 @@ save if the sheet is shared by link.
 - Courses hero: `photo-classroom.jpg` (no longer used on the homepage).
 - Winter Crash Course page, "What the course includes": `class-practice.jpg`
   (from `unnamed.webp`).
-- `photo-mentoring.jpg` is no longer shown on a page; it is a mirrored
-  selfie (the signboard text reads backwards). `hero-classroom.jpg` and
-  `home-tuition.jpg` are the old AI-generated stock images; `home-tuition.jpg`
-  is still used on the homepage and Home Tuition page until a real photo
-  is available.
+- `photo-mentoring.jpg` (About page) is a mirrored selfie: its signboard
+  text reads backwards. `home-tuition.jpg` (homepage and Home Tuition page)
+  is a correctly oriented photo of the same group. `hero-classroom.jpg` is
+  unused.
 - Before publishing, confirm consent for every identifiable student
   (especially minors) and teacher in these photographs.
 
@@ -360,18 +359,17 @@ save if the sheet is shared by link.
   as Google's guidelines require.
 
 ## Temporary publication safeguards (11 October 2026)
-- **Photos awaiting consent.** Optimised photos showing identifiable
-  students or teachers whose consent is not yet confirmed are kept in
-  `pending-approval/` (ignored by Git, never published):
-  `class-group.jpg`, `class-practice.jpg`, `class-students-attentive.jpg`,
-  `class-teaching-board*.jpg`, `class-teacher-writing.jpg` and the faculty
-  photos of Panjo Lepcha, Joneswar Basumatary, Darpan Dahal, Mang Semi
-  Subba, Pranika Gurung, Pema Phuti Sherpa and Anjana Chettri. Until then:
+- **Photos awaiting consent.** Optimised classroom photos showing
+  identifiable students are kept in `pending-approval/` (ignored by Git,
+  never published): `class-group.jpg`, `class-practice.jpg`,
+  `class-students-attentive.jpg`, `class-teaching-board*.jpg` and
+  `class-teacher-writing.jpg`. Faculty portraits were approved for
+  publication on 12 October 2026; Khushi Gurung and Pratima Sharma use
+  placeholders because no photo was supplied. Until then:
   - homepage collage: `photo-classroom.jpg` (consented),
     `class-periodic-table.jpg` and `class-whiteboard.jpg` (no faces);
   - About keeps `photo-mentoring.jpg`; Courses has a text-only header;
     the Winter page has no photo;
-  - the Faculty page shows placeholder graphics except for MK Chettri.
   To restore an approved photo, move it back from `pending-approval/assets/`
   to `assets/` and put its `<img>` back (the earlier markup is in the local
   branch `backup/3680ad8-with-photos`, which must never be pushed).
@@ -385,4 +383,21 @@ save if the sheet is shared by link.
 - **HTTPS.** The registration and payment pages switch any `http://` visit
   to `https://` before showing the form. GitHub Pages "Enforce HTTPS"
   still needs to be ticked by a repository admin.
+
+## Reviews and consistency update (12 October 2026)
+- All 16 selected Google reviews remain in `reviews-data.js`, unchanged.
+  Every review is still `permission:"pending"`, so on ascendgangtok.com the
+  homepage, Results and Winter pages show a "Read our reviews on Google
+  Maps" link instead of the cards. To publish a review, reply to it on
+  Google asking the reviewer's permission; once they agree, change that
+  review to `permission:"granted"` and it appears automatically.
+- Faculty cards share one structure (portrait, name, role, qualifications,
+  optional research line, experience label). Anjana Chettri's card lists
+  qualifications and experience only.
+- Ordinary body text on the main pages uses `--text-body` (16px) from the
+  shared stylesheet; supporting lines use `--text-support` (15px).
+- Clean URLs: GitHub Pages already serves `/faculty` etc. with the same
+  page (canonical tags point to the `.html` address, so there is no
+  duplicate content). Internal links keep `.html`; links to the homepage
+  now point to `/` instead of `index.html`.
 
