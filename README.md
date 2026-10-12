@@ -387,8 +387,10 @@ save if the sheet is shared by link.
 ## Reviews and consistency update (12 October 2026)
 - All 16 selected Google reviews remain in `reviews-data.js`, unchanged.
   Every review is still `permission:"pending"`, so on ascendgangtok.com the
-  homepage, Results and Winter pages show a "Read our reviews on Google
-  Maps" link instead of the cards. To publish a review, reply to it on
+  homepage and Winter review sections stay hidden and the Results page
+  shows one sentence linking to the Google Business Profile. Cards show
+  the reviewer's name, star rating and original wording, with one small
+  "Reviews posted ... on Google" source line below them. To publish a review, reply to it on
   Google asking the reviewer's permission; once they agree, change that
   review to `permission:"granted"` and it appears automatically.
 - Faculty cards share one structure (portrait, name, role, qualifications,

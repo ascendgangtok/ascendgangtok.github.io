@@ -155,3 +155,21 @@
 .info-card h3,.process-grid h3{font-size:17px;line-height:1.35}
 .benefit-stack b{font-size:16px}.benefit-stack small{font-size:var(--text-support);line-height:1.5;margin-top:2px}
 .faq summary{font-size:var(--text-body);line-height:1.45}
+/* Testimonial cards: name, small stars, original wording; one source line below the cards */
+.review-card{padding:22px 22px 24px}
+.review-name{margin:0;font-size:16px;font-weight:750;color:var(--ink);line-height:1.35}
+.review-card .review-stars{margin-top:6px;font-size:13px;letter-spacing:1.5px}
+.review-card .review-context{margin-top:10px}
+.review-card blockquote{flex:none;margin:12px 0 0;font-size:var(--text-body);line-height:var(--lh-body)}
+p.review-source{display:flex;align-items:center;justify-content:center;gap:0;margin:20px 0 0;font-size:13.5px;color:var(--muted)}
+p.review-source img{width:36px;height:36px;flex:0 0 36px;margin-right:-4px}
+.wcc-reviews p.review-source,.section-heading.left~p.review-source{justify-content:flex-start}
+
+/* Navigation cards and trust strips: readable descriptions, headings slightly stronger */
+.page-links a{gap:16px;padding:22px 24px}
+.page-links>a>span{font-size:11px}
+.page-links b{font-size:17px;line-height:1.35}
+.page-links small{font-size:var(--text-body);line-height:1.5;margin-top:3px}
+.trust strong{font-size:15.5px;line-height:1.35}
+.trust small{font-size:14.5px;line-height:1.45;margin-top:2px}
+@media(max-width:560px){.page-links a{padding:18px 18px}.page-links small{font-size:15px}}
