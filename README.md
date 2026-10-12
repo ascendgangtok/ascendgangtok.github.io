@@ -412,3 +412,23 @@ save if the sheet is shared by link.
   wide below), edge to edge, no borders or fade. Its height follows the
   hero text on desktop; it is a 4:3 block on tablets and a square on phones.
 
+## Navigation, About & Contact, testimonials and payment (12 October 2026)
+- Main navigation: Home, About & Contact, Courses, Winter Crash Course,
+  Study Notes, Quizzes, Papers, Home Tuition, Faculty, Results (single-line
+  labels; the mobile menu is used at 1240px and below).
+- `about.html` is the combined About & Contact page; contact details,
+  the WhatsApp enquiry form and the map sit under `#contact` and
+  `#enquiry-form`. `contact.html` remains as a small page that forwards to
+  `about.html#contact` (canonical `about.html`, `noindex`) so old links
+  keep working; it is no longer in the sitemap.
+- Testimonials: one shared carousel ("What Our Students and Parents Say")
+  built by `script.js` from `reviews-data.js`, showing the 12 complete,
+  selected, `permission:"granted"` reviews. Pages: homepage, About &
+  Contact, Courses, Faculty, Winter Crash Course, Home Tuition, Results,
+  Study Notes, Quizzes and Papers. Each page only needs the
+  `data-testimonials` section and `reviews-data.js` before `script.js`.
+- Payment: the unreliable "Open UPI app" buttons were removed from the
+  admission success screen and `payment.html`. Payment is by QR code or
+  the UPI ID `ascendgangtok@axl` (with Copy UPI ID); 70769 42996 is shown
+  as a payment-help number only, not as a UPI ID.
+

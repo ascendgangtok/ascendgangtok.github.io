@@ -290,7 +290,6 @@
     $('wcrResRemaining').textContent = money(saved.remaining);
     setStatus(saved.status);
     const upi = 'upi://pay?' + new URLSearchParams({pa: UPI_ID, pn: PAYEE, am: WINTER_INITIAL_PAYMENT.toFixed(2), cu: 'INR', tn: 'Ascend ' + saved.id}).toString();
-    $('wcrUpiLink').href = upi;
     try {
       qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];
       const code = qrcode(0, 'M');

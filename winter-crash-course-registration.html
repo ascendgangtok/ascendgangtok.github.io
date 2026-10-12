@@ -50,6 +50,7 @@
     .wcr-paycard{border:1px solid var(--line);border-radius:12px;padding:20px;margin:18px 0 0;text-align:center}.wcr-paycard h3{margin:0 0 4px;font-size:17px;color:var(--ink)}
     .wcr-amount{font-size:34px;font-weight:900;color:var(--red);margin:2px 0 10px}#wcrQr{width:220px;max-width:100%;margin:0 auto}#wcrQr svg{width:100%;height:auto;display:block}
     .wcr-payee{font-size:14px;line-height:1.7;margin:12px 0 0}.wcr-payee b{color:var(--ink)}
+    .wcr-upi-box{display:flex;flex-direction:column;align-items:center;gap:8px;margin:14px auto 0;padding:14px 16px;max-width:360px;border:1px dashed #e6b9bb;border-radius:12px;background:#fff8f8}.wcr-upi-box span{font-size:13px;color:var(--muted)}.wcr-upi-box strong{font-size:20px;letter-spacing:.3px;color:var(--ink);overflow-wrap:anywhere}.wcr-upi-box .btn{margin:0;min-height:44px;width:100%;max-width:220px}
     .wcr-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.wcr-actions .btn{width:100%;margin:0}
     .wcr-report{border-top:1px solid var(--line);margin-top:20px;padding-top:18px}.wcr-report h3{font-size:17px;margin:0 0 6px;color:var(--ink)}
     .wcr-wa{width:100%;margin-top:12px;text-align:center}.wcr-actions.one{grid-template-columns:1fr}
@@ -102,14 +103,16 @@
       <h3>Pay the initial amount by UPI</h3>
       <div class="wcr-amount">₹2,500</div>
       <div id="wcrQr" role="img" aria-label="UPI payment QR code for ₹2,500 to Ascend Institute"></div>
-      <p class="wcr-hint">Scan with any UPI app. The amount and your registration ID are filled in automatically.</p>
-      <p class="wcr-payee"><b>UPI ID:</b> ascendgangtok@axl<br><b>Account holder:</b> Mani K Chettri<br><b>Bank:</b> State Bank of India</p>
-      <div class="wcr-actions">
-        <a class="btn btn-primary" id="wcrUpiLink" href="#">Open UPI app</a>
+      <p class="wcr-hint">Open your own UPI app and scan this QR code. The amount and your registration ID are filled in automatically.</p>
+      <div class="wcr-upi-box">
+        <span>Or pay to this UPI ID</span>
+        <strong id="wcrUpiId">ascendgangtok@axl</strong>
         <button class="btn btn-outline" id="wcrCopyUpi" type="button">Copy UPI ID</button>
       </div>
       <p class="wcr-hint" id="wcrCopyMsg" role="status"></p>
-      <p class="wcr-hint">Please write your registration ID in the payment note if your app asks for one.</p>
+      <p class="wcr-payee"><b>Account holder:</b> Mani K Chettri<br><b>Bank:</b> State Bank of India</p>
+      <p class="wcr-hint">If you enter the UPI ID yourself, pay ₹2,500 and write your registration ID in the payment note.</p>
+      <p class="wcr-hint">Payment help: call <a href="tel:+917076942996">70769 42996</a> or <a href="tel:+917797898999">77978 98999</a>.</p>
     </div>
     <div class="wcr-report">
       <h3>After paying, send us the payment screenshot</h3>
