@@ -227,6 +227,25 @@ registration, the duplicate check and the concession formulas were
 checked on the real sheet, and the test row was then removed.
 
 ### Files
+- `winter-application-pdf.js`: prepares an A4 submitted admission application
+  after the form validates the backend acknowledgement. It uses the exact
+  submitted details and the unchanged fee quote. The confirmation screen
+  offers **Download Application PDF** and **Share Application via WhatsApp**
+  before or after payment. The filename includes the registration ID.
+  Native sharing passes the actual PDF file to the selected app; parents
+  choose WhatsApp and the institute recipient (77978 98999) themselves.
+  Unsupported or failed file sharing downloads the PDF and opens the
+  institute WhatsApp chat with the ID; a visible link remains available if
+  a popup is blocked, and parents must attach and send the PDF themselves.
+  Cancellation leaves both actions available. PDF preparation and download
+  failures show an explicit message; preparation can be retried without
+  submitting another registration.
+  The application is not a receipt or admission confirmation. Personal
+  details and the PDF remain only in tab memory, never in browser storage
+  or public URLs. After a refresh, the existing payment step still restores,
+  but parents must use their downloaded application or contact the institute.
+  Libraries, fonts and logo are served locally; see
+  `assets/vendor/pdf-lib/README.md`. No backend or Sheet changes are needed.
 - `winter-crash-course-registration.html` and
   `winter-crash-course-registration.js`: the form (marked `noindex`, not
   in the sitemap). Linked from the Winter Crash Course page, the homepage

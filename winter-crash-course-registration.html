@@ -53,6 +53,8 @@
     .wcr-upi-box{display:flex;flex-direction:column;align-items:center;gap:8px;margin:14px auto 0;padding:14px 16px;max-width:360px;border:1px dashed #e6b9bb;border-radius:12px;background:#fff8f8}.wcr-upi-box span{font-size:13px;color:var(--muted)}.wcr-upi-box strong{font-size:20px;letter-spacing:.3px;color:var(--ink);overflow-wrap:anywhere}.wcr-upi-box .btn{margin:0;min-height:44px;width:100%;max-width:220px}
     .wcr-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.wcr-actions .btn{width:100%;margin:0}
     .wcr-report{border-top:1px solid var(--line);margin-top:20px;padding-top:18px}.wcr-report h3{font-size:17px;margin:0 0 6px;color:var(--ink)}
+    .wcr-application{border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:18px;background:var(--soft)}.wcr-application h3{font-size:18px;margin:0 0 6px;color:var(--ink)}
+    .wcr-application .btn{white-space:normal;min-height:48px}.wcr-application .btn:disabled{opacity:.6;cursor:wait;transform:none}.wcr-application .wcr-hint{overflow-wrap:anywhere}
     .wcr-wa{width:100%;margin-top:12px;text-align:center}.wcr-actions.one{grid-template-columns:1fr}
     .wcr-foot{border-top:1px solid var(--line);padding:22px 0 30px;font-size:13.5px;color:var(--muted);text-align:center}.wcr-foot a{color:var(--red);font-weight:750}
     .hp-field{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
@@ -99,6 +101,19 @@
       <div class="strong"><dt>Initial online payment now</dt><dd>₹2,500</dd></div>
       <div><dt>Remaining course fee, payable later as arranged with the institute</dt><dd id="wcrResRemaining"></dd></div>
     </dl>
+    <div class="wcr-application" aria-labelledby="wcrApplicationTitle">
+      <h3 id="wcrApplicationTitle">Your admission application</h3>
+      <p class="wcr-hint">Your completed application is available before or after payment. It records your submission; your seat is confirmed only after payment verification.</p>
+      <div class="wcr-actions">
+        <button class="btn btn-primary" id="wcrDownloadPdf" type="button" disabled>Download Application PDF</button>
+        <button class="btn btn-outline" id="wcrSharePdf" type="button" disabled>Share Application via WhatsApp</button>
+      </div>
+      <p class="wcr-hint">If a sharing menu opens, choose WhatsApp and send the PDF to <b>77978 98999</b>. Otherwise, download the PDF and attach it in the WhatsApp chat that opens.</p>
+      <p class="wcr-hint">Save a copy before refreshing or closing this tab. For your privacy, the application is not kept in browser storage.</p>
+      <p class="wcr-hint" id="wcrPdfMsg" role="status" aria-live="polite"></p>
+      <button class="btn btn-outline" id="wcrRetryPdf" type="button" hidden>Retry preparing PDF</button>
+      <a class="btn btn-outline" id="wcrPdfWhatsApp" target="_blank" rel="noopener" hidden>Open WhatsApp and attach the downloaded PDF</a>
+    </div>
     <div class="wcr-paycard">
       <h3>Pay the initial amount by UPI</h3>
       <div class="wcr-amount">₹2,500</div>
@@ -198,6 +213,7 @@
 <script src="winter-course-fees.js"></script>
 <!-- Local MIT-licensed QR generator: no third-party service receives payment details. -->
 <script src="assets/qrcode-generator.js"></script>
+<script src="winter-application-pdf.js"></script>
 <script src="winter-crash-course-registration.js"></script>
 </body>
 </html>

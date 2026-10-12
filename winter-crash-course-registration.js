@@ -31,6 +31,8 @@
   const money = n => '₹' + Number(n).toLocaleString('en-IN');
   const startedAt = Date.now();
   let submissionKey = '', pending = false, saved = null;
+  // Personal details and the completed application exist only in this tab's memory.
+  let application = null, applicationBlob = null, applicationFile = null, pdfBusy = false;
 
   if (!configured) $('wcrNotConfigured').hidden = false;
 
@@ -274,8 +276,15 @@
     }
     saved = {id: reply.id, key: submissionKey, status: reply.status, label: $('feeCourse').textContent,
       courseFee: q.courseFee, remaining: q.remainingCourseFee};
+    application = {id: reply.id, data: {
+      studentName: payload.studentName, schoolName: payload.schoolName, guardianName: payload.guardianName,
+      phone: payload.phone, studentPhone: payload.studentPhone, address: payload.address,
+      className: payload.className, board: payload.board, course: payload.course,
+      preferredSubjects: payload.preferredSubjects
+    }, quote: q};
     try { sessionStorage.setItem(STORE_KEY, JSON.stringify(saved)); } catch (err) { /* storage unavailable */ }
     showResult(true);
+    prepareApplication();
   });
 
   // A changed form is a new submission; an unchanged retry reuses the key so it is never saved twice.
@@ -305,6 +314,7 @@
     $('wcrWhatsApp').href = 'https://wa.me/917797898999?text=' + encodeURIComponent(
       `Hello Ascend Institute, my Winter Crash Course registration ID is ${saved.id}. I have paid ₹2,500. Payment screenshot attached.`);
     $('wcrResult').hidden = false;
+    if (!application) $('wcrPdfMsg').textContent = 'This tab was refreshed or reopened, so the private application details are no longer available here. Use your previously downloaded PDF, or contact 77978 98999 with your registration ID for help. Do not register again for the same student.';
     if (scroll) { $('wcrResult').scrollIntoView({behavior: 'smooth', block: 'start'}); $('wcrResult').focus({preventScroll: true}); }
   }
 
@@ -312,6 +322,81 @@
     $('wcrStatus').textContent = status;
     if (saved) { saved.status = status; try { sessionStorage.setItem(STORE_KEY, JSON.stringify(saved)); } catch (err) { /* ignore */ } }
   }
+
+  // ---------- Admission application download and sharing (independent of payment) ----------
+  const pdfMessage = message => { $('wcrPdfMsg').textContent = message; };
+  const pdfFilename = () => 'Ascend-Admission-Application-' + application.id + '.pdf';
+  function pdfButtons(enabled) {
+    $('wcrDownloadPdf').disabled = !enabled;
+    $('wcrSharePdf').disabled = !enabled;
+  }
+  async function prepareApplication() {
+    if (!application || pdfBusy) return;
+    pdfBusy = true;
+    pdfButtons(false);
+    $('wcrRetryPdf').hidden = true;
+    pdfMessage('Preparing your application PDF… You can still use the payment details below.');
+    try {
+      applicationBlob = await window.createWinterApplicationPdf(application.id, application.data, application.quote);
+      try {
+        applicationFile = typeof File === 'function'
+          ? new File([applicationBlob], pdfFilename(), {type: 'application/pdf'}) : null;
+      } catch (err) { applicationFile = null; /* Download works even if file sharing is unavailable. */ }
+      $('wcrPdfWhatsApp').href = 'https://wa.me/917797898999?text=' + encodeURIComponent(
+        `Hello Ascend Institute, my Winter Crash Course registration ID is ${application.id}. I am sharing my submitted admission application PDF. Please find the application attached.`);
+      pdfButtons(true);
+      pdfMessage('Your application PDF is ready. You can download or share it now.');
+    } catch (err) {
+      applicationBlob = null; applicationFile = null;
+      pdfMessage('Your registration is saved, but the PDF could not be prepared. Check your connection and retry preparing the PDF. Do not submit another registration.');
+      $('wcrRetryPdf').hidden = false;
+    } finally { pdfBusy = false; }
+  }
+  function downloadApplication() {
+    if (!applicationBlob) return false;
+    let url, link;
+    try {
+      url = URL.createObjectURL(applicationBlob);
+      link = document.createElement('a');
+      link.href = url; link.download = pdfFilename();
+      document.body.append(link); link.click();
+      // Give mobile browsers time to consume the blob before releasing it.
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+      pdfMessage('PDF download requested. Check your downloads; if your browser opens the PDF, use its Save or Share option.');
+      return true;
+    } catch (err) {
+      if (url) URL.revokeObjectURL(url);
+      pdfMessage('The PDF download could not start. Please try again, or use Share Application via WhatsApp.');
+      return false;
+    } finally { if (link) link.remove(); }
+  }
+  function fallbackShare() {
+    if (!downloadApplication()) return;
+    $('wcrPdfWhatsApp').hidden = false;
+    pdfMessage('PDF download requested. In WhatsApp, attach the downloaded application PDF and send it to 77978 98999. If the chat does not open, use the Open WhatsApp button below. Nothing is sent automatically.');
+    try { window.open($('wcrPdfWhatsApp').href, '_blank', 'noopener'); }
+    catch (err) { /* The visible WhatsApp link remains available when the browser blocks popups. */ }
+  }
+  $('wcrRetryPdf').addEventListener('click', prepareApplication);
+  $('wcrDownloadPdf').addEventListener('click', downloadApplication);
+  $('wcrSharePdf').addEventListener('click', async () => {
+    if (!applicationBlob || pdfBusy) return;
+    let native = false;
+    try {
+      native = !!(applicationFile && navigator.share && navigator.canShare && navigator.canShare({files: [applicationFile]}));
+    } catch (err) { /* Fall back when file support cannot be determined. */ }
+    if (!native) { fallbackShare(); return; }
+    pdfButtons(false);
+    try {
+      // Keep this call in the click handler: native sharing requires user activation.
+      await navigator.share({files: [applicationFile], title: 'Ascend admission application',
+        text: `Registration ID: ${application.id}. Choose WhatsApp and send this PDF to Ascend Institute at 77978 98999.`});
+      pdfMessage('The PDF was handed to your selected sharing app. Make sure you send it to Ascend Institute at 77978 98999.');
+    } catch (err) {
+      if (err.name === 'AbortError') pdfMessage('Sharing was cancelled. You can download the PDF or try sharing again.');
+      else fallbackShare();
+    } finally { pdfButtons(true); }
+  });
 
   $('wcrCopyUpi').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText(UPI_ID); $('wcrCopyMsg').textContent = 'UPI ID copied.'; }
