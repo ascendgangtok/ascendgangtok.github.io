@@ -511,15 +511,15 @@ Decisions approved by the institute on 19 November 2026.
   Sociology (five subjects; packages of 2, 3 or 4). The 60% paid at
   admission includes the ₹2,000 seat-booking advance. If a batch is
   full, a separate batch may be formed.
-- **Online form version 3** (`winter-course-fees.js` version
-  `2026-11-19`): new fees, Sociology, and a Nepali checkbox for
-  CBSE Class 10. The application PDF shows the Nepali fee separately.
-  **The backend must be updated together with the website.** Paste the
-  new `winter-course-fees.js` into the Apps Script file `WinterCourseFees`
-  and the new `registration_related/winter-course/Code.gs` (version 3)
-  into `Code`, then Deploy > Manage deployments > edit > New version.
-  Code.gs version 3 adds one sheet column at the end, "Nepali Fee
-  (separate)", automatically, and still accepts version 2 submissions
-  without Nepali. Opening the web app URL then shows "(form version 3,
-  fees 2026-11-19)". Until both sides match, registrations are refused
-  with "please reload".
+- **Online form: still version 2 (backend unchanged).** The institute chose
+  not to update the Apps Script backend. `winter-course-fees.js` stays
+  exactly as deployed (version `2026-10-10`), so the online form still
+  charges ₹14,000 for Complete Syllabus Support 2 subjects. A note on the
+  form says the approved fee is ₹13,000 and the institute reduces the
+  remaining fee by ₹1,000; record this in the sheet. Nepali is requested
+  through "Preferred subjects", and Sociology by phone or WhatsApp
+  (text-only hints; the data sent to the backend is unchanged). The
+  complete version 3 (form, fees `2026-11-19`, Nepali checkbox, Sociology,
+  `registration_related/winter-course/Code.gs` version 3) is kept on
+  branch `form-v3-pending`. It must be published only together with the
+  Apps Script update described in `registration_related/winter-course/README.txt`.

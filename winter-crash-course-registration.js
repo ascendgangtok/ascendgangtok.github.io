@@ -98,15 +98,16 @@
     if (c && c.countOnly) {
       $('subjectLegend').firstChild.textContent = 'Number of subjects ';
       Object.keys(c.fees).forEach(n => box.append(option('radio', 'subjectCount', n, n + (n === '1' ? ' subject' : ' subjects'), '', money(c.fees[n]))));
-      if (c.nepaliFee) box.append(option('checkbox', 'nepali', 'yes', 'Nepali (optional)',
-        'Separate fee. Only with at least two regular subjects. Held only if at least six students enrol; otherwise the Nepali fee is refunded.', money(c.nepaliFee)));
-      $('subjectHint').textContent = 'Regular subjects: Mathematics, Science, Social Science (SST) and English. Fees are for the complete two-month course.';
+      // Text only: Nepali is recorded through "Preferred subjects" until the backend supports it.
+      $('subjectHint').textContent = 'Regular subjects: Mathematics, Science, Social Science (SST) and English. Fees are for the complete two-month course. ' +
+        'Optional Nepali (₹4,000, only with at least two regular subjects, held only if at least six students enrol) is arranged by the institute: write "Nepali" in Preferred subjects below.';
     } else if (c) {
       $('subjectLegend').firstChild.textContent = 'Subjects ';
       c.subjects.forEach(s => box.append(option('checkbox', 'subjects', s, s)));
       if (c.computerFee) box.append(option('checkbox', 'computer', 'yes', 'Computer', 'Separate fee. Can be taken alone or added', money(c.computerFee)));
       const fees = Object.keys(c.fees).map(n => n + ' subjects ' + money(c.fees[n])).join(' · ');
-      $('subjectHint').textContent = (c.computerFee ? 'Mathematics, Physics, Chemistry and Biology: at least two. ' : 'Select at least two. ') + fees + '.';
+      $('subjectHint').textContent = (c.computerFee ? 'Mathematics, Physics, Chemistry and Biology: at least two. ' : 'Select at least two. ') + fees + '.' +
+        (key === 'cbse12-humanities' ? ' Sociology is also offered; to include Sociology, please call or WhatsApp 77978 98999.' : '');
     }
     box.querySelectorAll('input').forEach(i => i.addEventListener('change', updateFee));
     updateFee();
@@ -117,9 +118,7 @@
     if (!c) return {course};
     if (c.countOnly) {
       const r = form.querySelector('input[name="subjectCount"]:checked');
-      const sel = {course, subjectCount: r ? Number(r.value) : 0};
-      if (c.nepaliFee) sel.nepali = !!form.querySelector('input[name="nepali"]:checked');
-      return sel;
+      return {course, subjectCount: r ? Number(r.value) : 0};
     }
     const sel = {course, subjects: [...form.querySelectorAll('input[name="subjects"]:checked')].map(i => i.value)};
     if (c.computerFee) sel.computer = !!form.querySelector('input[name="computer"]:checked');
@@ -127,7 +126,7 @@
   }
 
   function anySubjectChosen(sel) {
-    return sel.subjectCount || (sel.subjects && sel.subjects.length) || sel.computer || sel.nepali;
+    return sel.subjectCount || (sel.subjects && sel.subjects.length) || sel.computer;
   }
 
   function updateFee() {
@@ -138,21 +137,21 @@
     $('subjectMsg').textContent = !q.ok && WINTER_COURSES[sel.course] && anySubjectChosen(sel) ? q.error : '';
     if (!q.ok) return q;
     const subjectsText = q.subjects.length ? q.subjects.concat(q.computer ? ['Computer'] : []).join(', ')
-      : q.computer ? 'Computer' : q.subjectCount + (q.subjectCount === 1 ? ' subject' : ' subjects') + (q.nepali ? ' + Nepali' : '');
+      : q.computer ? 'Computer' : q.subjectCount + (q.subjectCount === 1 ? ' subject' : ' subjects');
     $('feeCourse').textContent = q.label + ': ' + subjectsText;
-    const split = (q.computer || q.nepali) && q.packageFee > 0;
+    const split = q.computer && q.packageFee > 0;
     $('feeCoreRow').hidden = !split;
     $('feeComputerRow').hidden = !split;
-    $('feeCoreLabel').textContent = q.subjectCount + (q.nepali ? ' regular subjects' : ' core subjects');
+    $('feeCoreLabel').textContent = q.subjectCount + ' core subjects';
     $('feeCore').textContent = money(q.packageFee);
-    $('feeExtraLabel').textContent = q.nepali ? 'Nepali (separate fee)' : 'Computer (separate fee)';
-    $('feeComputer').textContent = money(q.nepali ? q.nepaliFee : q.computerFee);
+    $('feeComputer').textContent = money(q.computerFee);
     $('feeCourseFee').textContent = money(q.courseFee);
     $('feeRemaining').textContent = money(q.remainingCourseFee);
     $('feeRemainingNote').textContent = money(q.courseFee) + ' course fee less the ' + money(q.seatAdvance) +
       ' advance. Together with the separate ' + money(q.registrationFee) + ' registration fee, the total is ' +
       money(q.courseFee + q.registrationFee) + ', before any approved concession.' +
-      (q.nepali ? ' Nepali is held only if at least six students enrol; if it is not held, the amount paid for Nepali is refunded.' : '');
+      // Approved November 2026 fee; the online calculation changes when the backend is updated.
+      (q.course === 'cbse10-complete' && q.subjectCount === 2 ? ' The fee for this package is now ₹13,000: the institute will reduce your remaining course fee by ₹1,000.' : '');
     return q;
   }
 
@@ -252,7 +251,7 @@
     submissionKey = submissionKey || uuid();
     const payload = {
       action: 'register', submissionKey, website: $('wcrWebsite').value, elapsedMs: Date.now() - startedAt,
-      feesVersion: WINTER_FEES_VERSION, formVersion: 3, studentName: v('studentName'), guardianName: v('guardianName'),
+      feesVersion: WINTER_FEES_VERSION, formVersion: 2, studentName: v('studentName'), guardianName: v('guardianName'),
       phone: normalisePhone(v('phone')), studentPhone: v('studentPhone') ? normalisePhone(v('studentPhone')) : '',
       address: v('address'), schoolName: v('schoolName'),
       className: classEl.value, board: boardEl.value, course: sel.course,
@@ -263,7 +262,6 @@
     if ('subjectCount' in sel) payload.subjectCount = sel.subjectCount;
     if ('subjects' in sel) payload.subjects = sel.subjects;
     if ('computer' in sel) payload.computer = sel.computer;
-    if ('nepali' in sel) payload.nepali = sel.nepali;
 
     pending = true;
     submit.disabled = true;
