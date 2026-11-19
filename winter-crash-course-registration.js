@@ -97,17 +97,25 @@
     $('preferredWrap').hidden = !(c && c.countOnly);
     if (c && c.countOnly) {
       $('subjectLegend').firstChild.textContent = 'Number of subjects ';
-      Object.keys(c.fees).forEach(n => box.append(option('radio', 'subjectCount', n, n + (n === '1' ? ' subject' : ' subjects'), '', money(c.fees[n]))));
-      // Text only: Nepali is recorded through "Preferred subjects" until the backend supports it.
+      Object.keys(c.fees).forEach(n => {
+        // The approved fee for this package (₹13,000) differs from the deployed backend rules, so it
+        // cannot be registered online: the option is shown with the correct fee but cannot be selected.
+        const viaInstitute = key === 'cbse10-complete' && n === '2';
+        const o = option('radio', 'subjectCount', n, n + (n === '1' ? ' subject' : ' subjects'),
+          viaInstitute ? 'Not available online. For admission, please call or WhatsApp 77978 98999.' : '',
+          viaInstitute ? '₹13,000' : money(c.fees[n]));
+        if (viaInstitute) { o.querySelector('input').disabled = true; o.style.cursor = 'not-allowed'; o.style.background = '#f4f4f4'; }
+        box.append(o);
+      });
       $('subjectHint').textContent = 'Regular subjects: Mathematics, Science, Social Science (SST) and English. Fees are for the complete two-month course. ' +
-        'Optional Nepali (₹4,000, only with at least two regular subjects, held only if at least six students enrol) is arranged by the institute: write "Nepali" in Preferred subjects below.';
+        'Nepali (optional, ₹4,000, only with at least two regular subjects; held only if at least six students enrol) cannot be added online: for admission with Nepali, please call or WhatsApp 77978 98999.';
     } else if (c) {
       $('subjectLegend').firstChild.textContent = 'Subjects ';
       c.subjects.forEach(s => box.append(option('checkbox', 'subjects', s, s)));
       if (c.computerFee) box.append(option('checkbox', 'computer', 'yes', 'Computer', 'Separate fee. Can be taken alone or added', money(c.computerFee)));
       const fees = Object.keys(c.fees).map(n => n + ' subjects ' + money(c.fees[n])).join(' · ');
       $('subjectHint').textContent = (c.computerFee ? 'Mathematics, Physics, Chemistry and Biology: at least two. ' : 'Select at least two. ') + fees + '.' +
-        (key === 'cbse12-humanities' ? ' Sociology is also offered; to include Sociology, please call or WhatsApp 77978 98999.' : '');
+        (key === 'cbse12-humanities' ? ' Sociology is also offered but cannot be selected online: for admission with Sociology, please call or WhatsApp 77978 98999.' : '');
     }
     box.querySelectorAll('input').forEach(i => i.addEventListener('change', updateFee));
     updateFee();
@@ -149,9 +157,7 @@
     $('feeRemaining').textContent = money(q.remainingCourseFee);
     $('feeRemainingNote').textContent = money(q.courseFee) + ' course fee less the ' + money(q.seatAdvance) +
       ' advance. Together with the separate ' + money(q.registrationFee) + ' registration fee, the total is ' +
-      money(q.courseFee + q.registrationFee) + ', before any approved concession.' +
-      // Approved November 2026 fee; the online calculation changes when the backend is updated.
-      (q.course === 'cbse10-complete' && q.subjectCount === 2 ? ' The fee for this package is now ₹13,000: the institute will reduce your remaining course fee by ₹1,000.' : '');
+      money(q.courseFee + q.registrationFee) + ', before any approved concession.';
     return q;
   }
 
@@ -172,6 +178,10 @@
   $('phone').addEventListener('input', () => checkPhone($('phone'), true));
   $('studentPhone').addEventListener('input', () => checkPhone($('studentPhone'), false));
   $('address').addEventListener('input', () => $('address').setCustomValidity(''));
+  // Nepali has a separate fee the online form cannot calculate: admission with Nepali is through the institute.
+  const checkPreferred = () => $('preferredSubjects').setCustomValidity(!$('preferredWrap').hidden && /nepali|नेपाली/i.test($('preferredSubjects').value)
+    ? 'Nepali cannot be added online. For admission with Nepali, please call or WhatsApp 77978 98999.' : '');
+  $('preferredSubjects').addEventListener('input', checkPreferred);
 
   // ---------- Submission ----------
   function uuid() {
@@ -234,6 +244,7 @@
     checkPhone($('phone'), true);
     checkPhone($('studentPhone'), false);
     $('address').setCustomValidity($('address').value.trim() ? '' : 'Please enter your residential address.');
+    checkPreferred();
     if (!form.reportValidity()) return;
     const sel = selection();
     const q = updateFee();
