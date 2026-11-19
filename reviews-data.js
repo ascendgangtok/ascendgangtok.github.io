@@ -1,5 +1,5 @@
 /*
-  ASCEND INSTITUTE: STUDENT AND PARENT REVIEWS
+  ASCEND COACHING INSTITUTE: STUDENT AND PARENT REVIEWS
   --------------------------------------------
   This is the ONLY file you need to edit to add, update or remove a
   review shown on the website. The homepage, the Results & Testimonials

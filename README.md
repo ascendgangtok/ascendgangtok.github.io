@@ -177,7 +177,8 @@ These links are intentionally kept out of the main navigation. The registration 
 ## 2026-10 update: Winter Crash Course, reviews and custom domain
 - Added `winter-crash-course-2026-27.html`, linked from the homepage, the
   Courses page, the footer of every page and `sitemap.xml`.
-- The 20% early-admission concession notice appears five times (homepage,
+- (Removed 19 November 2026: the offer expired on 31 October 2026 and all
+  copies below were deleted from the HTML.) The 20% early-admission concession notice appeared five times (homepage,
   Courses page, twice on the Winter Crash Course page and once on the
   online admission form). Each copy sits
   between `<!-- OFFER 2026-10-31 START -->` and `<!-- OFFER 2026-10-31 END -->`
@@ -473,3 +474,52 @@ save if the sheet is shared by link.
 - Publish this form only after the backend version 2 is deployed as a
   new version of the existing web app deployment.
 
+## November 2026: admission brochure, institute details, form version 3
+
+Decisions approved by the institute on 19 November 2026.
+
+- **Name and contact details, site-wide:** "Ascend Coaching Institute"
+  (formerly "Ascend Institute"; kept as an `alternateName` in the homepage
+  schema). Address: Ascend Centre, Near Indian Post Office, Daragoan,
+  Gangtok, Sikkim 737102. Second number: 86375 60360 (Call); 77978 98999
+  remains Call & WhatsApp. The question-paper PDFs in `assets/` still show
+  the old name, and the About page map embed still searches by the old
+  building name so the map keeps working.
+- **Unlisted admission brochure:** `admissions/winter-2026-27.html` (live
+  URL `https://ascendgangtok.com/admissions/winter-2026-27.html`). It is
+  the single source for both the web page and the A4 PDF
+  `admissions/ascend-winter-crash-course-2026-27.pdf`, which is its print
+  version. It holds the full fee structure. It is marked `noindex,
+  nofollow, noarchive`, has no canonical link or structured data, is not
+  in `sitemap.xml`, and no public page links to it. Do not add it to
+  `robots.txt`: that file is public and would advertise the URL. This is
+  not privacy: the repository is public on GitHub, and anyone with the
+  link can open the page and the PDF.
+- **Rebuilding the PDF** after editing the page: in WSL, run
+  `node build-pdf.js` in `../winter-brochure-2026-27/` (outside this
+  repository). The script uses Playwright's Chromium and the DejaVu
+  fonts, writes the PDF here and keeps a dated copy in that folder.
+  Always change the page first, never the PDF alone.
+- **Course rules:** CBSE Class 10 regular subjects are Mathematics,
+  Science, Social Science (SST) and English. Complete Syllabus Support
+  costs ₹13,000 / ₹17,000 / ₹22,000 for 2 / 3 / 4 subjects;
+  Exam-Focused Board Practice costs ₹8,000 / ₹13,000 / ₹18,000 for
+  1 / 2 / 3 subjects (maximum three). Optional Nepali costs ₹4,000 and
+  is allowed only with at least two regular subjects, never alone. It
+  runs only if at least six students enrol; otherwise the Nepali fee
+  paid is refunded (other fees are not). CBSE Class 12 Humanities adds
+  Sociology (five subjects; packages of 2, 3 or 4). The 60% paid at
+  admission includes the ₹2,000 seat-booking advance. If a batch is
+  full, a separate batch may be formed.
+- **Online form version 3** (`winter-course-fees.js` version
+  `2026-11-19`): new fees, Sociology, and a Nepali checkbox for
+  CBSE Class 10. The application PDF shows the Nepali fee separately.
+  **The backend must be updated together with the website.** Paste the
+  new `winter-course-fees.js` into the Apps Script file `WinterCourseFees`
+  and the new `registration_related/winter-course/Code.gs` (version 3)
+  into `Code`, then Deploy > Manage deployments > edit > New version.
+  Code.gs version 3 adds one sheet column at the end, "Nepali Fee
+  (separate)", automatically, and still accepts version 2 submissions
+  without Nepali. Opening the web app URL then shows "(form version 3,
+  fees 2026-11-19)". Until both sides match, registrations are refused
+  with "please reload".

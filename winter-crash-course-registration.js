@@ -74,8 +74,8 @@
     keys.forEach(k => {
       const c = WINTER_COURSES[k];
       const short = c.label.replace(/^(CBSE|ICSE) Class \d+:?\s*/, '') || 'Subject packages';
-      const sub = k === 'cbse10-complete' ? 'For students whose syllabus is incomplete or who need detailed teaching. Minimum two subjects.'
-        : k === 'cbse10-exam' ? 'For students who have completed or nearly completed the syllabus.'
+      const sub = k === 'cbse10-complete' ? 'For students who have not completed the syllabus or need proper teaching of important topics. Two, three or four subjects.'
+        : k === 'cbse10-exam' ? 'For students who have completed or almost completed the syllabus. One, two or three subjects.'
         : k === 'icse10' ? 'Mathematics, Physics, Chemistry, Biology and Computer'
         : c.subjects.join(', ') + '. Minimum two subjects.';
       box.append(option('radio', 'course', k, short, sub));
@@ -98,7 +98,9 @@
     if (c && c.countOnly) {
       $('subjectLegend').firstChild.textContent = 'Number of subjects ';
       Object.keys(c.fees).forEach(n => box.append(option('radio', 'subjectCount', n, n + (n === '1' ? ' subject' : ' subjects'), '', money(c.fees[n]))));
-      $('subjectHint').textContent = 'Fee for the complete two-month course.';
+      if (c.nepaliFee) box.append(option('checkbox', 'nepali', 'yes', 'Nepali (optional)',
+        'Separate fee. Only with at least two regular subjects. Held only if at least six students enrol; otherwise the Nepali fee is refunded.', money(c.nepaliFee)));
+      $('subjectHint').textContent = 'Regular subjects: Mathematics, Science, Social Science (SST) and English. Fees are for the complete two-month course.';
     } else if (c) {
       $('subjectLegend').firstChild.textContent = 'Subjects ';
       c.subjects.forEach(s => box.append(option('checkbox', 'subjects', s, s)));
@@ -115,7 +117,9 @@
     if (!c) return {course};
     if (c.countOnly) {
       const r = form.querySelector('input[name="subjectCount"]:checked');
-      return {course, subjectCount: r ? Number(r.value) : 0};
+      const sel = {course, subjectCount: r ? Number(r.value) : 0};
+      if (c.nepaliFee) sel.nepali = !!form.querySelector('input[name="nepali"]:checked');
+      return sel;
     }
     const sel = {course, subjects: [...form.querySelectorAll('input[name="subjects"]:checked')].map(i => i.value)};
     if (c.computerFee) sel.computer = !!form.querySelector('input[name="computer"]:checked');
@@ -123,7 +127,7 @@
   }
 
   function anySubjectChosen(sel) {
-    return sel.subjectCount || (sel.subjects && sel.subjects.length) || sel.computer;
+    return sel.subjectCount || (sel.subjects && sel.subjects.length) || sel.computer || sel.nepali;
   }
 
   function updateFee() {
@@ -134,19 +138,21 @@
     $('subjectMsg').textContent = !q.ok && WINTER_COURSES[sel.course] && anySubjectChosen(sel) ? q.error : '';
     if (!q.ok) return q;
     const subjectsText = q.subjects.length ? q.subjects.concat(q.computer ? ['Computer'] : []).join(', ')
-      : q.computer ? 'Computer' : q.subjectCount + (q.subjectCount === 1 ? ' subject' : ' subjects');
+      : q.computer ? 'Computer' : q.subjectCount + (q.subjectCount === 1 ? ' subject' : ' subjects') + (q.nepali ? ' + Nepali' : '');
     $('feeCourse').textContent = q.label + ': ' + subjectsText;
-    const split = q.computer && q.packageFee > 0;
+    const split = (q.computer || q.nepali) && q.packageFee > 0;
     $('feeCoreRow').hidden = !split;
     $('feeComputerRow').hidden = !split;
-    $('feeCoreLabel').textContent = q.subjectCount + ' core subjects';
+    $('feeCoreLabel').textContent = q.subjectCount + (q.nepali ? ' regular subjects' : ' core subjects');
     $('feeCore').textContent = money(q.packageFee);
-    $('feeComputer').textContent = money(q.computerFee);
+    $('feeExtraLabel').textContent = q.nepali ? 'Nepali (separate fee)' : 'Computer (separate fee)';
+    $('feeComputer').textContent = money(q.nepali ? q.nepaliFee : q.computerFee);
     $('feeCourseFee').textContent = money(q.courseFee);
     $('feeRemaining').textContent = money(q.remainingCourseFee);
     $('feeRemainingNote').textContent = money(q.courseFee) + ' course fee less the ' + money(q.seatAdvance) +
       ' advance. Together with the separate ' + money(q.registrationFee) + ' registration fee, the total is ' +
-      money(q.courseFee + q.registrationFee) + ', before any approved concession.';
+      money(q.courseFee + q.registrationFee) + ', before any approved concession.' +
+      (q.nepali ? ' Nepali is held only if at least six students enrol; if it is not held, the amount paid for Nepali is refunded.' : '');
     return q;
   }
 
@@ -246,7 +252,7 @@
     submissionKey = submissionKey || uuid();
     const payload = {
       action: 'register', submissionKey, website: $('wcrWebsite').value, elapsedMs: Date.now() - startedAt,
-      feesVersion: WINTER_FEES_VERSION, formVersion: 2, studentName: v('studentName'), guardianName: v('guardianName'),
+      feesVersion: WINTER_FEES_VERSION, formVersion: 3, studentName: v('studentName'), guardianName: v('guardianName'),
       phone: normalisePhone(v('phone')), studentPhone: v('studentPhone') ? normalisePhone(v('studentPhone')) : '',
       address: v('address'), schoolName: v('schoolName'),
       className: classEl.value, board: boardEl.value, course: sel.course,
@@ -257,6 +263,7 @@
     if ('subjectCount' in sel) payload.subjectCount = sel.subjectCount;
     if ('subjects' in sel) payload.subjects = sel.subjects;
     if ('computer' in sel) payload.computer = sel.computer;
+    if ('nepali' in sel) payload.nepali = sel.nepali;
 
     pending = true;
     submit.disabled = true;
@@ -312,7 +319,7 @@
     }
     $('wcrWhatsApp').target = '_blank'; $('wcrWhatsApp').rel = 'noopener';
     $('wcrWhatsApp').href = 'https://wa.me/917797898999?text=' + encodeURIComponent(
-      `Hello Ascend Institute, my Winter Crash Course registration ID is ${saved.id}. I have paid ₹2,500. Payment screenshot attached.`);
+      `Hello Ascend Coaching Institute, my Winter Crash Course registration ID is ${saved.id}. I have paid ₹2,500. Payment screenshot attached.`);
     $('wcrResult').hidden = false;
     if (!application) $('wcrPdfMsg').textContent = 'This tab was refreshed or reopened, so the private application details are no longer available here. Use your previously downloaded PDF, or contact 77978 98999 with your registration ID for help. Do not register again for the same student.';
     if (scroll) { $('wcrResult').scrollIntoView({behavior: 'smooth', block: 'start'}); $('wcrResult').focus({preventScroll: true}); }
@@ -343,7 +350,7 @@
           ? new File([applicationBlob], pdfFilename(), {type: 'application/pdf'}) : null;
       } catch (err) { applicationFile = null; /* Download works even if file sharing is unavailable. */ }
       $('wcrPdfWhatsApp').href = 'https://wa.me/917797898999?text=' + encodeURIComponent(
-        `Hello Ascend Institute, my Winter Crash Course registration ID is ${application.id}. I am sharing my submitted admission application PDF. Please find the application attached.`);
+        `Hello Ascend Coaching Institute, my Winter Crash Course registration ID is ${application.id}. I am sharing my submitted admission application PDF. Please find the application attached.`);
       pdfButtons(true);
       pdfMessage('Your application PDF is ready. You can download or share it now.');
     } catch (err) {
@@ -390,8 +397,8 @@
     try {
       // Keep this call in the click handler: native sharing requires user activation.
       await navigator.share({files: [applicationFile], title: 'Ascend admission application',
-        text: `Registration ID: ${application.id}. Choose WhatsApp and send this PDF to Ascend Institute at 77978 98999.`});
-      pdfMessage('The PDF was handed to your selected sharing app. Make sure you send it to Ascend Institute at 77978 98999.');
+        text: `Registration ID: ${application.id}. Choose WhatsApp and send this PDF to Ascend Coaching Institute at 77978 98999.`});
+      pdfMessage('The PDF was handed to your selected sharing app. Make sure you send it to Ascend Coaching Institute at 77978 98999.');
     } catch (err) {
       if (err.name === 'AbortError') pdfMessage('Sharing was cancelled. You can download the PDF or try sharing again.');
       else fallbackShare();

@@ -56,7 +56,9 @@
       page = pdf.addPage(PageSizes.A4);
       const scaled = logo.scaleToFit(178, 45);
       page.drawImage(logo, {x: margin, y: height - 38 - scaled.height, ...scaled});
-      text('ASCEND INSTITUTE', 253, 41, 17, bold);
+      // Fit the institute name in the space to the right of the logo.
+      const brandSize = Math.min(17, (width - margin - 253) / bold.widthOfTextAtSize('ASCEND COACHING INSTITUTE', 1));
+      text('ASCEND COACHING INSTITUTE', 253, 41 + (17 - brandSize) / 2, brandSize, bold);
       text('Winter Crash Course 2026–27', 253, 66, 11);
       page.drawLine({start: {x: margin, y: height - 98}, end: {x: width - margin, y: height - 98}, thickness: 2, color: red});
       text('Admission Application', margin, 114, 21, bold);
@@ -127,15 +129,19 @@
     await field('Selected course', quote.label);
     const subjects = quote.subjects.concat(quote.computer ? ['Computer'] : []);
     await field('Selected subjects', subjects.length ? subjects.join(', ')
-      : `${quote.subjectCount} ${quote.subjectCount === 1 ? 'subject' : 'subjects'}`);
+      : `${quote.subjectCount} ${quote.subjectCount === 1 ? 'subject' : 'subjects'}` + (quote.nepali ? ' + Nepali (optional)' : ''));
     if (WINTER_COURSES[data.course].countOnly && data.preferredSubjects) await field('Preferred subjects', data.preferredSubjects);
     // Keep the fee breakdown and submission status together on long applications.
-    ensure(22 + (quote.computer && quote.packageFee > 0 ? 8 : 6) * 24 + 68);
+    const extra = (quote.computer || quote.nepali) && quote.packageFee > 0;
+    // Nepali: seven one-line fee fields plus one wrapped line for the Nepali condition.
+    ensure(22 + (quote.nepali ? 7 * 24 + 15 : (extra ? 8 : 6) * 24) + 68);
     section('Fees');
     await field('Package fee (total course fee)', money(quote.courseFee));
-    if (quote.computer && quote.packageFee > 0) {
-      await field('Core subject package', money(quote.packageFee));
-      await field('Computer (separate fee)', money(quote.computerFee));
+    if (extra) {
+      await field(quote.nepali ? 'Regular subject package' : 'Core subject package', money(quote.packageFee));
+      if (quote.computer) await field('Computer (separate fee)', money(quote.computerFee));
+      if (quote.nepali) await field('Nepali (separate fee)', money(quote.nepaliFee) +
+        ' (held only if at least six students enrol; if not held, the amount paid for Nepali is refunded)');
     }
     await field('Registration fee', money(quote.registrationFee));
     await field('Adjustable seat-booking advance', money(quote.seatAdvance));
@@ -144,18 +150,18 @@
     ensure(68);
     text('Registration status: Submitted, awaiting payment verification.', margin, y, 10);
     text('This application is not a payment receipt or confirmed admission certificate.', margin, y + 21, 9);
-    text('Seat confirmation follows manual payment verification by Ascend Institute.', margin, y + 37, 9);
+    text('Seat confirmation follows manual payment verification by Ascend Coaching Institute.', margin, y + 37, 9);
     const pages = pdf.getPages();
     pages.forEach((p, index) => {
       page = p;
       page.drawLine({start: {x: margin, y: 94}, end: {x: width - margin, y: 94}, thickness: .5, color: grey});
-      text('Ascend Institute · Tejpal Pradhan Building, Near Indian Post Office', margin, height - 83, 8.5);
-      text('Daragoan, Tadong, Gangtok, Sikkim 737102', margin, height - 69, 8.5);
-      text('Call / WhatsApp: 77978 98999 / 70769 42996 · ascendgangtok.com', margin, height - 55, 8.5);
+      text('Ascend Coaching Institute · Ascend Centre, Near Indian Post Office', margin, height - 83, 8.5);
+      text('Daragoan, Gangtok, Sikkim 737102', margin, height - 69, 8.5);
+      text('Call & WhatsApp: 77978 98999 · Call: 86375 60360 · ascendgangtok.com', margin, height - 55, 8.5);
       text(`Page ${index + 1} of ${pages.length}`, width - margin - 52, height - 36, 8, regular, grey);
     });
-    pdf.setTitle('Ascend Institute - Admission Application');
-    pdf.setAuthor('Ascend Institute');
+    pdf.setTitle('Ascend Coaching Institute - Admission Application');
+    pdf.setAuthor('Ascend Coaching Institute');
     return new Blob([await pdf.save()], {type: 'application/pdf'});
   };
 })();
